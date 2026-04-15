@@ -1,0 +1,10 @@
+.seperator {
+  display: block;
+  height: 10px;
+  background-color: #1800a2;
+  margin: 0;
+}
+
+.logo {
+  height: 40px;
+}
