@@ -1,3 +1,10 @@
+.btn-primary {
+  --bs-btn-bg: #1800a2;
+  --bs-btn-border-color: #ffffff;
+  --bs-btn-hover-bg: #2c5d8f;
+  --bs-btn-hover-border-color: #2c5d8f;
+}
+
 .seperator {
   display: block;
   height: 10px;
@@ -7,4 +14,16 @@
 
 .logo {
   height: 40px;
+}
+.modal-content {
+  border: 3px solid #1800a2 !important;
+}
+.btn-nord {
+  background-color: #1800a2 !important;
+  border-color: #1800a2 !important;
+  color: #ffffff !important;
+}
+.btn-nord:hover {
+  background-color: #0024c7 !important;
+  border-color: #0024c7 !important;
 }
