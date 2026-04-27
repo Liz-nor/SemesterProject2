@@ -2,7 +2,7 @@ import { generatePosts } from '../pages/homepage.js';
 
 let allListings = [];
 let currentPage = 1;
-export const listingsPerPage = 10;
+export const listingsPerPage = 12;
 
 function getPaginationElements() {
   return {

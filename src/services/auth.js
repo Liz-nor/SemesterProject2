@@ -1,41 +1,39 @@
-import { post } from './apiClient.js';
+import { BASE_URL } from './apiClient.js';
+import { saveUser } from '../utils/storage.js';
 
-const LOGIN_ENDPOINT = '/auth/login';
-
-export function isLoggedIn() {
-  return Boolean(localStorage.getItem('accessToken'));
-}
-
-export function updateAuthUI() {
-  const loggedIn = isLoggedIn();
-  document.querySelectorAll('.isloggedIn').forEach((el) => {
-    el.style.display = loggedIn ? '' : 'none';
+export async function registerUser(userData) {
+  const response = await fetch(`${BASE_URL}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(userData),
   });
-  document.querySelectorAll('isLoggedOut').forEach((el) => {
-    el.style.display = loggedIn ? 'none' : '';
-  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.error?.[0]?.message || 'Registration failed');
+  }
+
+  return result.data;
 }
 
 export async function loginUser(credentials) {
-  try {
-    const response = await post(LOGIN_ENDPOINT, credentials);
+  const response = await fetch(`${BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(credentials),
+  });
 
-    const { accessToken, ...profile } = response.data;
+  const result = await response.json();
 
-    if (accessToken) {
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('profile', JSON.stringify(profile));
-      return profile;
-    } else {
-      throw new Error('Login successful, but no access token received.');
-    }
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error(result.errors?.[0]?.message || 'Login failed');
   }
-}
 
-export function logoutUser() {
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('profile');
-  alert('User has been logged out.');
+  saveUser(result.data);
+  return result.data;
 }

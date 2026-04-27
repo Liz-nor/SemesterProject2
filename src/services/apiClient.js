@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://v2.api.noroff.dev/auction';
+export const BASE_URL = 'https://v2.api.noroff.dev';
 
 export async function apiClient(endpoint, options = {}) {
   const { body, ...customOptions } = options;

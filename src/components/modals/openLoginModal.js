@@ -1,4 +1,5 @@
 import { showModal } from './showModal.js';
+import { loginUser } from '../../services/auth.js';
 
 export function openLoginModal() {
   const { modalElement, modalInstance } = showModal({
@@ -36,11 +37,9 @@ export function openLoginModal() {
     `,
   });
 
-  if (!modalElement) return;
-
   const form = document.getElementById('loginForm');
-  const emailInput = document.getElementById('loginEmail');
   const message = document.getElementById('loginMessage');
+  const emailInput = document.getElementById('loginEmail');
 
   modalElement.addEventListener('shown.bs.modal', () => {
     emailInput?.focus();
@@ -49,30 +48,16 @@ export function openLoginModal() {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
+    const credentials = {
+      email: form.email.value.trim(),
+      password: form.password.value.trim(),
+    };
 
     try {
-      message.textContent = '';
-
-      // Temporary fake login
-      // Replace this with your real login API call later
-      if (!email || !password) {
-        throw new Error('Please fill in all fields');
-      }
-
-      localStorage.setItem('accessToken', 'fake-token');
-      localStorage.setItem(
-        'profile',
-        JSON.stringify({ email, name: email.split('@')[0] }),
-      );
-
-      modalInstance.hide();
-
-      // Optional: refresh page UI after login
-      window.dispatchEvent(new Event('authChanged'));
+      const profile = await loginUser(credentials);
+      console.log('Login successful:', profile);
     } catch (error) {
-      message.textContent = error.message;
+      console.error(error.message);
     }
   });
 }

@@ -1,11 +1,19 @@
 import { Collapse } from 'bootstrap';
+import { openLoginModal } from './modals/openLoginModal.js';
 
 export function navbar() {
   const nav = document.getElementById('nav');
 
-  nav.innerHTML = `<span class="seperator"></span><nav class="navbar navbar-expand-lg bg-body-tertiary">
+  nav.innerHTML = `
+  <span class="seperator"></span>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#/"><img class="logo" src="../public/images/nordbidLogo.png" alt="NordBid Logo"></a>
+    <a class="navbar-brand" href="#/">
+    <img 
+    class="img-fluid" 
+    style="height: 50px;"
+    src="../public/images/nordbidLogo.png" 
+    alt="NordBid Logo"></a>
     <button
     class="navbar-toggler"
       type="button" 
@@ -26,18 +34,23 @@ export function navbar() {
         </li>
         <li class="nav-item">
           <a class="nav-link route-link" href="#/register">Register</a>
-        </li>        
+        </li>       
       </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
+      <button id="registerButton" class="btn-nord btn m-2">Register</button>
+      <button id="loginButton" class="btn btn-nord m-2">Login</button>
     </div>
   </div>
-</nav> `;
+</nav>`;
 
   const navbarCollapseEl = document.getElementById('navbarSupportedContent');
   const routeLinks = nav.querySelectorAll('.route-link');
+  const loginButton = document.getElementById('loginButton');
+  const registerButton = document.getElementById('registerButton');
+
+  loginButton?.addEventListener('click', openLoginModal);
+  registerButton?.addEventListener('click', () => {
+    window.location.href = '#/register';
+  });
 
   routeLinks.forEach((link) => {
     link.addEventListener('click', () => {
