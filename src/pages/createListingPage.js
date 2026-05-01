@@ -4,15 +4,15 @@ export async function createListing() {
   const app = document.getElementById('app');
 
   app.innerHTML = `
-    <form id="createListingForm" class="w-50 mx-auto">
+    <form id="createListingForm" class="w-75 mx-auto">
       <h2 class="mb-4">Create New Listing</h2>
       <div class="mb-3">
         <label for="title" class="form-label">Title<span class="text-danger"><strong>*</strong></span></label>
-        <input type="text" class="form-control" id="title" required>
+        <input type="text" class="form-control" id="title" required placeholder="Enter a title for your listing">
       </div>
       <div class="mb-3">
         <label for="categories" class="form-label">Categories<span class="text-danger"><strong>*</strong></span></label>
-        <input type="text" class="form-control" id="categories" required>
+        <input type="text" class="form-control" id="categories" required placeholder="Enter categories separated by commas (e.g. Electronics, Home, Fashion)">
       </div>
       <div class="mb-3">
         <label for="endDate" class="form-label">End Date<span class="text-danger"><strong>*</strong></span></label>
@@ -20,17 +20,17 @@ export async function createListing() {
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Description<span class="text-danger"><strong>*</strong></span></label>
-        <textarea class="form-control" id="description" rows="3" required></textarea>
+        <textarea class="form-control" id="description" rows="3" required placeholder="Enter a description for your listing"></textarea>
       </div>
       <div class="mb-3">
         <label for="imageUrl" class="form-label">Image URL (optional)</label>
-        <input type="image" class="form-control" id="imageUrl">
+        <input type="text" class="form-control" id="imageUrl" placeholder="https://example.com/image.jpg">
       </div>
       <div class="mb-3">
         <label for="imageAlt" class="form-label">Image Alt Text (optional)</label>
-        <input type="text" class="form-control" id="imageAlt">
+        <input type="text" class="form-control" id="imageAlt" placeholder="Description of the image">
       </div>
-      <button id="createListingsButton" type="submit" class="btn btn-nord">Create Listing</button>
+      <button id="createListingsButton" type="submit" class="btn btn-nord mb-3">Create Listing</button>
     </form>
   `;
 
@@ -51,7 +51,7 @@ export async function createListing() {
       .filter(Boolean);
 
     if (!title || !endDate || !description || !categories.length) {
-      alert('Please fill in Title and End Date');
+      alert('Please fill in all required fields.');
       return;
     }
 
@@ -69,7 +69,7 @@ export async function createListing() {
     try {
       await post('/auction/listings', payload);
       alert('Listing created successfully!');
-      window.location.href = '#/';
+      window.location.href = '#/profile';
     } catch (error) {
       console.error('Error creating listing:', error);
       createListingsButton.disabled = false;

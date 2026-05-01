@@ -25,25 +25,38 @@ export async function profilePage() {
 
   const profileContainer = document.getElementById('profileContainer');
   const listingsContainer = document.getElementById('listingsContainer');
-  profileContainer.classList.add(
-    'd-flex',
-    'align-items-center',
-    'gap-3',
-    'border',
-    'p-3',
-    'mb-4',
-    'rounded',
-  );
+
   async function loadProfile() {
     const res = await get(`/auction/profiles/${name}`);
     const data = res.data;
     profileContainer.innerHTML = `
-    ${data.banner?.url ? `<img class="border-radius w-100" src="${data.banner.url}" alt="${data.banner.alt || name}" />` : ''}
-      ${data.avatar?.url ? `<img class="rounded-circle" src="${data.avatar.url}" alt="${data.avatar.alt || name}" />` : ''}
-      <h2>${data.name}</h2>
-      ${data.bio ? `<p class="profile-bio">${data.bio}</p>` : ''}
-      ${data.credits ? `<p class="profile-credits">Credits: ${data.credits}</p>` : ''}
-      <p class="">${data._count?.listings ?? 0} listings &nbsp; ${data._count?.wins ?? 0} wins &nbsp</p>
+    <section class="container my-5">
+      <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+        <img
+        src="${data.banner.url}"
+        class="card-img-top"  
+        style="height: 100px; object-fit: cover;"
+        alt="${data.banner.alt || name}" />
+
+        <div class="card-body">
+          <div class="d-flex flex-column flex-md-row align-items-md-end gap-3">
+            <img 
+            src="${data.avatar.url}"
+            class="rounded-circle"  
+            style="width: 110px; height: 110px; object-fit: cover; margin-top: -70px;"
+            alt="${data.avatar.alt || name}" />
+
+        <div class="flex-grow-1">
+          <h2 class="h3 mb-1">
+          ${data.name}</h2>
+          <p class="text-muted mb-2">${data.bio}</p>
+          <span class="badge bg-info text-dark">Credits: ${data.credits}</span>
+          <p class="text-muted mb-2">${data._count?.listings ?? 0} listings &nbsp; ${data._count?.wins ?? 0} wins &nbsp</p>
+        </div>
+        <button class="btn btn-nord">Edit Profile</button>
+        </div>
+      </div>
+    </section>
     `;
   }
 
@@ -58,16 +71,17 @@ export async function profilePage() {
     listingsContainer.innerHTML = listings
       .map(
         (listing) => `
-        <div class="post-container">
-          <h3>${listing.title}</h3>
-          ${listing.description ? `<p>${listing.description}</p>` : ''}
-          ${listing.media?.[0]?.url ? `<img class="post-image" src="${listing.media[0].url}" alt="${listing.media[0].alt || listing.title}" onerror="this.remove()" />` : ''}
-          <div class="post-actions">
-            <a href="#/listing/${listing.id}" class="card-link">View</a>
-            ${isOwnProfile ? `<a href="#/edit-listing/${listing.id}" class="card-link">Edit</a>` : ''}
-          </div>
+      <div class="d-flex justify-content-between align-items-center gap-3 mb-4 p-3">
+        <h3 class="h4 mb-0">${listing.title}</h3>
+        <p>${listing.description}</p>
+        <img class="post-image" src="${listing.media?.[0]?.url}" alt="${listing.media?.[0]?.alt || listing.title}" onerror="this.onerror=null; this.src='images/no-image.png';" />
+        <p class="text-muted mb-0">Ends at: ${new Date(listing.endsAt).toLocaleString()}</p>
+        <div class="post-actions d-flex gap-2">
+          <a href="#/listing/${listing.id}" class="card-link btn btn-nord">View</a>
+          ${isOwnProfile ? `<a href="#/edit-listing/${listing.id}" class="card-link btn btn-nord">Edit</a>` : ''}
         </div>
-      `,
+      </div>
+    `,
       )
       .join('');
   }

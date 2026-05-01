@@ -17,7 +17,7 @@
 }
 .btn-nord {
   background-color: #1800a2 !important;
-  border-color: #1800a2 !important;
+  border: none !important;
   color: #ffffff !important;
 }
 .btn-nord:hover {
