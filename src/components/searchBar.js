@@ -28,7 +28,7 @@ export function searchBar(allListings) {
           const title = item.title?.toLowerCase() || '';
           const description = item.description?.toLowerCase() || '';
           const tags = item.tags?.join(' ').toLowerCase() || '';
-          const seller = item.seller?.toLowerCase() || '';
+          const seller = item._seller?.toLowerCase() || '';
 
           return (
             title.includes(query) ||

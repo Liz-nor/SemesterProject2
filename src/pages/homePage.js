@@ -14,7 +14,6 @@ export async function homePage() {
           </button>
           <div class="dropdown-menu" tabindex="-1" id="menu">
             <div class="dropdown-header d-flex justify-content-between align-items-center">
-              <h5 class="dropdown-title">Tags</h5>
               <button type="button" class="btn-close" data-bs-dismiss="dropdown"></button>
             </div>
 

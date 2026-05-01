@@ -9,8 +9,10 @@ export async function listingDetailsPage() {
   try {
     const response = await fetch(`${BASE_URL}/auction/listings/${id}`);
     const data = await response.json();
+
     const hasImage = !!data.data.media?.[0]?.url;
     const listing = data.data;
+
     const bids = listing.bids || [];
     const bidHistory = bids.length
       ? bids
@@ -20,9 +22,6 @@ export async function listingDetailsPage() {
           )
           .join('')
       : '<li>No bids yet</li>';
-    console.log(data);
-    console.log(listing);
-    console.log(listing.title);
 
     app.innerHTML = `
     <aside class="sidebar">

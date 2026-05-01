@@ -4,10 +4,16 @@ import { get } from '../services/apiClient.js';
 export async function profilePage() {
   const app = document.getElementById('app');
 
-  const params = new URLSearchParams(window.location.search);
+  const hashQuery = window.location.hash.split('?')[1] || '';
+  const params = new URLSearchParams(hashQuery);
   const myProfile = getProfile();
   const name = params.get('name') || myProfile?.name;
   const isOwnProfile = name === myProfile?.name;
+
+  if (!name) {
+    app.innerHTML = `<p class="text-center mt-4">Please log in to view your profile.</p>`;
+    return;
+  }
 
   app.innerHTML = `
     <section class="container mt-4">

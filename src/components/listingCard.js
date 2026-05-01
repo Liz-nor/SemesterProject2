@@ -4,6 +4,7 @@ import {
   isAuctionExpired,
 } from '../utils/listingsCountdown.js';
 import { renderAddCard } from './addListingCard.js';
+import { getCurrentPage } from './pagination.js';
 
 export function generateListings(listings, container) {
   listings.forEach((item, index) => {
@@ -17,7 +18,6 @@ export function generateListings(listings, container) {
 
     const card = document.createElement('div');
     card.className = 'col-10 col-md-6 col-lg-4 mb-4';
-    console.log(item.media);
 
     card.innerHTML = `
         <div class="card h-100 p-3 hover-shadow">
@@ -43,6 +43,7 @@ export function generateListings(listings, container) {
         }
         <h2>${item.title}</h2>
         <p>Ends at: ${formatDate(item.endsAt)}</p>
+        <p>Created at: ${formatDate(item.created)}</p>
         <p class="text-danger fw-bold">${getCountdown(item.endsAt)}</p>
         <p>Current bid: ${highestBid ?? 'No bids yet'}</p>
         <div class="d-flex w-50px justify-content-between align-items-center">
@@ -62,11 +63,13 @@ export function generateListings(listings, container) {
     }
 
     viewButton?.addEventListener('click', () => {
+      sessionStorage.setItem('currentPage', getCurrentPage());
       window.location.href = `#/listing/${item.id}`;
     });
 
     makeBidButton?.addEventListener('click', (e) => {
       e.stopPropagation();
+      sessionStorage.setItem('currentPage', getCurrentPage());
       window.location.href = `#/listing/${item.id}`;
     });
 

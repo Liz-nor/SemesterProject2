@@ -2,7 +2,8 @@ import { generateListings } from '../components/listingCard.js';
 
 let allListings = [];
 let currentPage = 1;
-export const listingsPerPage = 12;
+
+export const listingsPerPage = 9;
 
 function getPaginationElements() {
   return {
@@ -42,21 +43,25 @@ export function displayPage(page) {
   return listingsToDisplay;
 }
 
+export function getCurrentPage() {
+  return currentPage;
+}
+
 export function setupPagination(listings) {
   allListings = listings;
-  currentPage = 1;
 
   const { prevBtn, nextBtn } = getPaginationElements();
 
   if (prevBtn) prevBtn.onclick = prevPage;
   if (nextBtn) nextBtn.onclick = nextPage;
   currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
+  // sessionStorage.removeItem('currentPage');
+  sessionStorage.clear();
   displayPage(currentPage);
 }
 
 export function nextPage() {
   const totalPages = Math.ceil(allListings.length / listingsPerPage);
-  sessionStorage.setItem('currentPage', currentPage);
   if (currentPage < totalPages) {
     currentPage++;
     displayPage(currentPage);
@@ -66,7 +71,6 @@ export function nextPage() {
 export function prevPage() {
   if (currentPage > 1) {
     currentPage--;
-    sessionStorage.setItem('currentPage', currentPage);
     displayPage(currentPage);
   }
 }

@@ -8,7 +8,7 @@ export function navbar() {
   <span class="seperator"></span>
   <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#/">
+    <a class="navbar-brand" href="#/home">
     <img 
     class="img-fluid" 
     style="height: 50px;"
@@ -28,7 +28,7 @@ export function navbar() {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item m-2">
-          <a class="nav-link route-link active btn-nord btn" aria-current="page" href="#/">Home</a>
+          <a class="nav-link route-link active btn-nord btn" aria-current="page" href="#/home">Home</a>
         </li>
         <li class="nav-item m-2">
           <a class="nav-link route-link btn-nord btn" href="#/profile">My Profile</a>

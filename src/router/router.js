@@ -21,12 +21,7 @@ const routes = {
 
 export function router() {
   const hash = window.location.hash || '#/';
-  if (hash.startsWith('#/listing/')) {
-    listingDetailsPage();
-  } else if (hash === '#/') {
-    homePage();
-  }
-  const page = routes[hash] || notFoundPage;
+  const page = routes[hash] || (hash.startsWith('#/listing/') ? listingDetailsPage : notFoundPage);
   page();
 }
 
