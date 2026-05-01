@@ -2,6 +2,7 @@ import { homePage } from '../pages/homePage.js';
 import { profilePage } from '../pages/profilePage.js';
 import { registerPage } from '../pages/registerPage.js';
 import { listingDetailsPage } from '../pages/listingDetailsPage.js';
+import { createListing } from '../pages/createListingPage.js';
 
 function notFoundPage() {
   const app = document.getElementById('app');
@@ -13,6 +14,9 @@ const routes = {
   '#/profile': profilePage,
   '#/register': registerPage,
   '#/listing/:id': listingDetailsPage,
+  '#/create-listing': createListing,
+  // '#/edit-profile': editProfilePage,
+  // '#/edit-listing/:id': editListingPage,
 };
 
 export function router() {

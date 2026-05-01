@@ -14,6 +14,7 @@ export function navbar() {
     style="height: 50px;"
     src="../public/images/nordbidLogo.png" 
     alt="NordBid Logo"></a>
+    <p class="mt-3">Simple. Fair. Nordic.</p>
     <button
     class="navbar-toggler"
       type="button" 
@@ -26,14 +27,11 @@ export function navbar() {
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link route-link active" aria-current="page" href="#/">Home</a>
+        <li class="nav-item m-2">
+          <a class="nav-link route-link active btn-nord btn" aria-current="page" href="#/">Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link route-link" href="#/profile">My Profile</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link route-link" href="#/register">Register</a>
+        <li class="nav-item m-2">
+          <a class="nav-link route-link btn-nord btn" href="#/profile">My Profile</a>
         </li>       
       </ul>
       <button id="registerButton" class="btn-nord btn m-2">Register</button>

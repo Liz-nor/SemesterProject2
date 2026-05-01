@@ -1,3 +1,5 @@
+import { NOROFF_API_KEY } from '../utils/storage.js';
+
 export const BASE_URL = 'https://v2.api.noroff.dev';
 
 export async function apiClient(endpoint, options = {}) {

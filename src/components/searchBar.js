@@ -9,7 +9,7 @@ export function searchBar(allListings) {
   }
 
   container.innerHTML = `
-  <div class="input-group mb-3">
+  <div class="input-group">
       <input id="searchInput" class="form-control" placeholder="Search listings...">
       <button id="searchButton" class="btn btn-nord">
         <i class="bi bi-search"></i>

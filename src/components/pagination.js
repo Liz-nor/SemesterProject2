@@ -1,4 +1,4 @@
-import { generatePosts } from '../pages/homepage.js';
+import { generateListings } from '../components/listingCard.js';
 
 let allListings = [];
 let currentPage = 1;
@@ -26,7 +26,7 @@ export function displayPage(page) {
   const listingsToDisplay = allListings.slice(start, end);
 
   container.innerHTML = '';
-  generatePosts(listingsToDisplay, container);
+  generateListings(listingsToDisplay, container);
 
   const totalPages = Math.ceil(allListings.length / listingsPerPage);
 
@@ -42,21 +42,21 @@ export function displayPage(page) {
   return listingsToDisplay;
 }
 
-export function setupPagination(posts) {
-  allListings = posts;
+export function setupPagination(listings) {
+  allListings = listings;
   currentPage = 1;
 
   const { prevBtn, nextBtn } = getPaginationElements();
 
   if (prevBtn) prevBtn.onclick = prevPage;
   if (nextBtn) nextBtn.onclick = nextPage;
-
+  currentPage = Number(sessionStorage.getItem('currentPage')) || 1;
   displayPage(currentPage);
 }
 
 export function nextPage() {
   const totalPages = Math.ceil(allListings.length / listingsPerPage);
-
+  sessionStorage.setItem('currentPage', currentPage);
   if (currentPage < totalPages) {
     currentPage++;
     displayPage(currentPage);
@@ -66,6 +66,7 @@ export function nextPage() {
 export function prevPage() {
   if (currentPage > 1) {
     currentPage--;
+    sessionStorage.setItem('currentPage', currentPage);
     displayPage(currentPage);
   }
 }
