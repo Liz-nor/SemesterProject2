@@ -1,6 +1,39 @@
-<form>
-  <label for="datemax">Enter a date before 1980-01-01:</label>
-  <input type="date" id="datemax" name="datemax" max="1979-12-31"><br><br>
-  <label for="datemin">Enter a date after 2000-01-01:</label>
-  <input type="date" id="datemin" name="datemin" min="2000-01-02">
-</form>
+import { renderListingForm } from '../components/listingForm.js';
+import { get, put } from '../services/apiClient.js';
+
+export async function renderEditListingPage() {
+  const listingId = window.location.hash.split('/')[2];
+
+  const result = await get(`/auction/listings/${listingId}`);
+  console.log(result);
+  const listing = result.data;
+
+  renderListingForm({
+    mode: 'edit',
+    listing,
+  });
+
+  const listingForm = document.getElementById('listingForm');
+
+  listingForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const updatedListing = {
+      title: listingForm.title.value.trim(),
+      description: listingForm.description.value.trim(),
+      endsAt: new Date(listingForm.endDate.value).toISOString(),
+      tags: listingForm.categories.value
+        .split(',')
+        .map((tag) => tag.trim())
+        .filter(Boolean),
+      media: [
+        {
+          url: listingForm.imageUrl.value.trim(),
+          alt: listingForm.imageAlt.value.trim(),
+        },
+      ],
+    };
+
+    await put(`/auction/listings/${listingId}`, updatedListing);
+  });
+}

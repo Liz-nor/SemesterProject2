@@ -79,6 +79,7 @@ export async function profilePage() {
         <div class="post-actions d-flex gap-2">
           <a href="#/listing/${listing.id}" class="card-link btn btn-nord">View</a>
           ${isOwnProfile ? `<a href="#/edit-listing/${listing.id}" class="card-link btn btn-nord">Edit</a>` : ''}
+          ${isOwnProfile ? `<a href="#/delete-listing/${listing.id}" class="card-link btn btn-nord">Delete</a>` : ''}
         </div>
       </div>
     `,
