@@ -32,6 +32,11 @@ export function router() {
     return;
   }
 
+  if (hash.startsWith('#/profile/')) {
+    profilePage();
+    return;
+  }
+
   const page =
     routes[hash] ||
     (hash.startsWith('#/listing/') ? listingDetailsPage : notFoundPage);

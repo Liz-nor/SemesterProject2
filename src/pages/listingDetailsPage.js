@@ -1,5 +1,6 @@
 import { BASE_URL } from '../services/apiClient.js';
 import { formatDate } from '../utils/formatDate.js';
+import { renderBidHistory } from '../components/bidHistory.js';
 
 export async function listingDetailsPage() {
   const app = document.getElementById('app');
@@ -7,56 +8,51 @@ export async function listingDetailsPage() {
   app.innerHTML = `<p>Loading listing ${id}...</p>`;
 
   try {
-    const response = await fetch(`${BASE_URL}/auction/listings/${id}`);
+    const response = await fetch(
+      `${BASE_URL}/auction/listings/${id}?_bids=true&_seller=true`,
+    );
     const data = await response.json();
 
     const hasImage = !!data.data.media?.[0]?.url;
     const listing = data.data;
 
-    const bids = listing.bids || [];
-    const bidHistory = bids.length
-      ? bids
-          .map(
-            (bid) =>
-              `<li>${bid.amount} credits by ${bid.bidder.name} at ${formatDate(bid.createdAt)}</li>`,
-          )
-          .join('')
-      : '<li>No bids yet</li>';
-
     app.innerHTML = `
-    <aside class="sidebar">
-    <h1>${listing.title}</h1>
-    <p>${listing.description}</p>
-    <p>Current bid: ${listing.bids?.length ? Math.max(...listing.bids.map((b) => b.amount)) : 'No bids yet'}</p>
-    </aside>
-    <div class="card p-3 w-50 mx-auto">
-      <div class="card-body d-flex flex-column align-items-center">
-        ${
-          hasImage
-            ? `
-        <img
-        id="heroImage"
-        src="${listing.media?.[0]?.url}"
-        alt="${listing.title}"
-        class="img-fluid mb-2 w-100"
-        style="max-height: 400px; object-fit: cover;">
-        `
-            : `
-      <div class="d-flex align-items-center justify-content-center bg-light text-muted" style="height: 400px;">
-        <i class="bi bi-image" style="font-size: 2rem;"></i>
-        <span class="text-muted">No image available</span>
-      </div>
-        `
-        }
-        <h1 class="card-title">${listing.title}</h1>
-        <p class="card-text">${listing.description}</p>
-        <p class="card-text">Current bid: ${listing.bids?.length ? Math.max(...listing.bids.map((b) => b.amount)) : 'No bids yet'}</p>
-        <p>Ends at: ${formatDate(listing.endsAt)}</p>
-        <p>Bid Count: <strong>${listing._count?.bids ?? 0}</strong></p>
-        <p>First bid amount: ${listing.bids?.[0]?.amount ?? 'No bids yet'}</p>
+    <div class="container my-4">
+      <div class="row g-4">
+        <div class="col-12 col-lg-8">
+          <div class="card p-3">
+            <div class="card-body d-flex flex-column align-items-center">
+              ${
+                hasImage
+                  ? `<img
+                      id="heroImage"
+                      src="${listing.media?.[0]?.url}"
+                      alt="${listing.title}"
+                      class="img-fluid mb-2 w-100"
+                      style="max-height: 400px; object-fit: cover;">`
+                  : `<div class="d-flex align-items-center justify-content-center bg-light text-muted" style="height: 400px;">
+                      <i class="bi bi-image" style="font-size: 2rem;"></i>
+                      <span class="text-muted">No image available</span>
+                    </div>`
+              }
+              <h1 class="card-title">${listing.title}</h1>
+              <p class="card-text">${listing.description}</p>
+              <p class="card-text">Current bid: ${listing.bids?.length ? Math.max(...listing.bids.map((b) => b.amount)) : 'No bids yet'}</p>
+              <p>Ends at: ${formatDate(listing.endsAt)}</p>
+              <p>Bid Count: <strong>${listing._count?.bids ?? 0}</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4">
+          <div class="card p-3 h-100">
+            <h2 class="h5 mb-3">Bid History</h2>
+            <div id="bidHistoryContainer" class="overflow-auto" style="max-height: 500px;"></div>
+          </div>
+        </div>
       </div>
     </div>
     `;
+    renderBidHistory(listing.bids);
     const heroImage = app.querySelector('#heroImage');
     const allImages = listing.media;
 

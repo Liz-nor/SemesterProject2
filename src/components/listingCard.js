@@ -21,7 +21,9 @@ export function generateListings(listings, container) {
 
     card.innerHTML = `
         <div class="card h-100 p-3 hover-shadow">
-        ${item?.seller?.name ? `<p class="text-muted mb-1">Seller: ${item.seller.name}</p>` : ''}
+        <div class="d-flex justify-content-between align-items-center gap-3 mb-2">
+        <a href="${item?.seller?.name ? `#/profile/${item.seller.name}` : '#'}" class="badge bg-info text-dark mb-1 p-2 text-decoration-none">${item.seller?.name || 'Unknown Seller'}</a>
+        </div>
         ${
           item.media?.length
             ? `
@@ -30,7 +32,7 @@ export function generateListings(listings, container) {
         alt="${item.title}"
         class ="card-img-top img-fluid"
         style="height: 300px; object-fit: contain; font-size: 2rem;"
-        onerror="this.onerror=null; this.src='images/no-image.png'"
+        onerror="this.onerror=null; this.src='images/no-image.png'">
         `
             : `
         <div
@@ -41,14 +43,14 @@ export function generateListings(listings, container) {
         </div>
         `
         }
-        <h2>${item.title}</h2>
+        <h3 class="h4 mb-3">${item.title}</h3>
         <p>Ends at: ${formatDate(item.endsAt)}</p>
         <p>Created at: ${formatDate(item.created)}</p>
-        <p class="text-danger fw-bold">${getCountdown(item.endsAt)}</p>
+        <p class="text-danger fw-bold">Ends in: ${getCountdown(item.endsAt)}</p>
         <p>Current bid: ${highestBid ?? 'No bids yet'}</p>
-        <div class="d-flex w-50px justify-content-between align-items-center">
+        <div class="d-flex gap-2 justify-content-between align-items-center">
         <button class="btn btn-nord view-listing-btn">View Listing</button>
-        <button class="btn btn-nord mt-2 make-bid-btn">Make a bid</button>
+        <button class="btn btn-nord make-bid-btn">Make a bid</button>
         </div>
         </div>
         `;

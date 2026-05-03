@@ -12,8 +12,16 @@ export async function createListingPage() {
     const title = document.getElementById('title').value.trim();
     const description = document.getElementById('description').value.trim();
     const endDate = document.getElementById('endDate').value;
-    const imageUrl = document.getElementById('imageUrl').value.trim();
-    const imageAlt = document.getElementById('imageAlt').value.trim();
+
+    const media = form.media.value
+      .split(',')
+      .map((url) => url.trim())
+      .filter(Boolean)
+      .map((url) => ({
+        url,
+        alt: form.title.value.trim(),
+      }));
+
     const categories = (document.getElementById('categories').value || '')
       .split(',')
       .map((t) => t.trim())
@@ -28,7 +36,7 @@ export async function createListingPage() {
       title,
       ...(description ? { description } : {}),
       ...(categories.length ? { categories } : {}),
-      ...(imageUrl ? { media: [{ url: imageUrl, alt: imageAlt }] } : {}),
+      ...(media.length ? { media } : {}),
       endsAt: new Date(endDate).toISOString(),
     };
 

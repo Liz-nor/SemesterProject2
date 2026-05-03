@@ -1,13 +1,15 @@
 import { getProfile } from '../utils/storage.js';
 import { get } from '../services/apiClient.js';
-
+import { isAuctionExpired } from '../utils/listingsCountdown.js';
 export async function profilePage() {
   const app = document.getElementById('app');
 
-  const hashQuery = window.location.hash.split('?')[1] || '';
+  const hash = window.location.hash;
+  const hashQuery = hash.split('?')[1] || '';
   const params = new URLSearchParams(hashQuery);
   const myProfile = getProfile();
-  const name = params.get('name') || myProfile?.name;
+  const pathName = hash.startsWith('#/profile/') ? hash.split('#/profile/')[1].split('?')[0] : null;
+  const name = pathName || params.get('name') || myProfile?.name;
   const isOwnProfile = name === myProfile?.name;
 
   if (!name) {
@@ -25,7 +27,14 @@ export async function profilePage() {
 
   const profileContainer = document.getElementById('profileContainer');
   const listingsContainer = document.getElementById('listingsContainer');
-
+  listingsContainer.classList.add(
+    'row',
+    'row-cols-1',
+    'row-cols-md-2',
+    'row-cols-lg-3',
+    'g-4',
+    'mb-5',
+  );
   async function loadProfile() {
     const res = await get(`/auction/profiles/${name}`);
     const data = res.data;
@@ -61,7 +70,7 @@ export async function profilePage() {
   }
 
   async function loadListings() {
-    const res = await get(`/auction/profiles/${name}/listings`);
+    const res = await get(`/auction/profiles/${name}/listings?sort=created&sortOrder=desc`);
     const listings = res.data;
     if (!listings?.length) {
       listingsContainer.innerHTML = '<p>No listings yet.</p>';
@@ -71,20 +80,29 @@ export async function profilePage() {
     listingsContainer.innerHTML = listings
       .map(
         (listing) => `
-      <div class="d-flex justify-content-between align-items-center gap-3 mb-4 p-3">
-        <h3 class="h4 mb-0">${listing.title}</h3>
-        <p>${listing.description}</p>
-        <img class="post-image" src="${listing.media?.[0]?.url}" alt="${listing.media?.[0]?.alt || listing.title}" onerror="this.onerror=null; this.src='images/no-image.png';" />
-        <p class="text-muted mb-0">Ends at: ${new Date(listing.endsAt).toLocaleString()}</p>
-        <div class="post-actions d-flex gap-2">
-          <a href="#/listing/${listing.id}" class="card-link btn btn-nord">View</a>
-          ${isOwnProfile ? `<a href="#/edit-listing/${listing.id}" class="card-link btn btn-nord">Edit</a>` : ''}
-          ${isOwnProfile ? `<a href="#/delete-listing/${listing.id}" class="card-link btn btn-nord">Delete</a>` : ''}
+      <div class="col">
+        <div class="card h-100 p-3 hover-shadow">
+          <h3 class="h4 mb-3">${listing.title}</h3>
+          <img class="post-image img-fluid rounded-4" style="height: 300px; object-fit: cover;" src="${listing.media?.[0]?.url}" alt="${listing.media?.[0]?.alt || listing.title}" onerror="this.onerror=null; this.src='images/no-image.png';" />
+          <p>${listing.description}</p>
+          <p class="text-muted mb-0">Created at: ${new Date(listing.created).toLocaleString()}</p>
+          <p class="text-muted mb-0">Ends at: ${new Date(listing.endsAt).toLocaleString()}</p>
+          <div class="post-actions d-flex gap-2">
+            <a href="#/listing/${listing.id}" class="card-link btn btn-nord">View</a>
+            ${isOwnProfile ? `<a href="#/edit-listing/${listing.id}" class="card-link btn btn-nord edit-btn" data-expired="${isAuctionExpired(listing.endsAt)}">Edit</a>` : ''}
+            ${isOwnProfile ? `<a href="#/delete-listing/${listing.id}" class="card-link btn btn-nord delete-btn" data-expired="${isAuctionExpired(listing.endsAt)}">Delete</a>` : ''}
+          </div>
         </div>
       </div>
     `,
       )
       .join('');
+
+    listingsContainer.querySelectorAll('.delete-btn[data-expired="true"], .edit-btn[data-expired="true"]')
+    .forEach((btn) => {
+      btn.classList.add('disabled');
+      btn.setAttribute('aria-disabled', 'true');
+    });
   }
 
   await Promise.all([loadProfile(), loadListings()]);
