@@ -29,10 +29,14 @@ export async function renderListingForm({
     <div class="mb-3">
         <label for="imageUrl" class="form-label">Image URL (optional)</label>
         <input name="media" type="text" class="form-control" accept="image/*" multiple id="imageUrl" placeholder="https://image1.jpg, https://image2.jpg" value="${listing?.media?.[0]?.url || ''}">
+    <div id="imageInputs"></div>
+        <button type="button" id="addImageBtn" class="btn btn-secondary mt-3">
+        Add image
+        </button>
     </div>
     <div class="mb-3">
         <label for="imageAlt" class="form-label">Image Alt Text (optional)</label>
-        <input name="mediaAlt" type="text" class="form-control"id="imageAlt" placeholder="Description of the image" value="${listing?.media?.[0]?.alt || ''}">
+        <input name="mediaAlt" type="text" class="form-control" id="imageAlt" placeholder="Description of the image" value="${listing?.media?.[0]?.alt || ''}">
     </div>
     <button id="listingsButton" type="submit" class="btn btn-nord mb-3">${mode === 'edit' ? 'Update listing' : 'Create Listing'}</button>
     </form>

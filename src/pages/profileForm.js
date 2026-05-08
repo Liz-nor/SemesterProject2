@@ -1,10 +1,11 @@
 import { registerUser } from '../services/auth.js';
 
-export function registerPage() {
+export function renderProfileForm({ mode = 'register', profile = {} } = {}) {
+  // Ternary operator - short line if/else statement
   const app = document.getElementById('app');
 
   app.innerHTML = `
-  <form class="container mt-4" id="registerForm">
+  <form class="container mt-4" id="profileForm">
 
   <div class="mb-3">
   <input type="text" class="form-control" name="name" id="floatingName" placeholder="Your name">
@@ -22,18 +23,25 @@ export function registerPage() {
   <textarea class="form-control"  placeholder="Tell us something about you" name="bio" id="floatingTextarea2" style="height: 100px" ></textarea>
 </div>
 
-<div class="input-group mb-3">
-  <label for="myfile" class="m-2">Select a file:</label>
-  <input type="file" class="m-2" id="myfile" name="myfile"><br><br>
+<div class="d-flex">
+  <div class="input-group mb-3">
+    <label for="myfile" class="m-2">Upload a profile picture</label>
+    <input type="file" class="m-2" id="myfile" name="profilePicture"><br><br>
+  </div>
+
+  <div class="input-group mb-3">
+    <label for="myfile" class="m-2">Upload a profile banner</label>
+    <input type="file" class="m-2" id="myfile" name="bannerPicture"><br><br>
+  </div>
 </div>
 
-<button type="submit" class="btn btn-nord">Register</button>
+<button type="submit" class="btn btn-nord">${mode === 'edit' ? 'Save Changes' : 'Register'}</button>
 
 <div id="registerMessage" class="text-danger small mt-2"></div>
 </form>
 `;
 
-  const form = document.getElementById('registerForm');
+  const form = document.getElementById('profileForm');
 
   if (!form) {
     console.warn('Register form not found');
@@ -44,7 +52,7 @@ export function registerPage() {
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
+    window.location.hash = '#/profile';
     const userData = {
       name: form.name.value.trim(),
       email: form.email.value.trim(),

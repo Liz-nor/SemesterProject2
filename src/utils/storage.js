@@ -14,6 +14,10 @@ export function getProfile() {
   return JSON.parse(localStorage.getItem('profile'));
 }
 
+export function editProfile(updatedProfile) {
+  localStorage.setItem('profile', JSON.stringify(updatedProfile));
+}
+
 export function logout() {
   localStorage.removeItem('accessToken');
   localStorage.removeItem('profile');

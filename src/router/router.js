@@ -1,9 +1,11 @@
 import { homePage } from '../pages/homePage.js';
 import { profilePage } from '../pages/profilePage.js';
-import { registerPage } from '../pages/registerPage.js';
+import { renderProfileForm } from '../pages/profileForm.js';
 import { listingDetailsPage } from '../pages/listingDetailsPage.js';
 import { createListingPage } from '../pages/createListingPage.js';
 import { renderEditListingPage } from '../pages/editListingPage.js';
+import { editProfilePage } from '../pages/editProfilePage.js';
+
 function notFoundPage() {
   const app = document.getElementById('app');
   app.innerHTML = `<h1>404 - Page Not Found</h1>`;
@@ -12,10 +14,10 @@ const routes = {
   '#/': homePage,
   '#/home': homePage,
   '#/profile': profilePage,
-  '#/register': registerPage,
+  '#/register': renderProfileForm,
   '#/listing/:id': listingDetailsPage,
   '#/create-listing': createListingPage,
-  // '#/edit-profile': editProfilePage,
+  '#/edit-profile/:id': editProfilePage,
   '#/edit-listing/:id': renderEditListingPage,
 };
 
@@ -29,6 +31,11 @@ export function router() {
 
   if (hash.startsWith('#/edit-listing/')) {
     renderEditListingPage();
+    return;
+  }
+
+  if (hash.startsWith('#/edit-profile/')) {
+    editProfilePage();
     return;
   }
 

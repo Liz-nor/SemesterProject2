@@ -1,5 +1,6 @@
 import { Collapse } from 'bootstrap';
 import { openLoginModal } from './modals/openLoginModal.js';
+import { requireLogin } from '../utils/authGuard.js';
 
 export function navbar() {
   const nav = document.getElementById('nav');
@@ -31,11 +32,12 @@ export function navbar() {
           <a class="nav-link route-link active btn-nord btn" aria-current="page" href="#/home">Home</a>
         </li>
         <li class="nav-item m-2">
-          <a class="nav-link route-link btn-nord btn" href="#/profile">My Profile</a>
+          <a class="nav-link route-link btn-nord btn" href="#/profile" onclick="if (!requireLogin()) return;">My Profile</a>
         </li>       
       </ul>
       <button id="registerButton" class="btn-nord btn m-2">Register</button>
       <button id="loginButton" class="btn btn-nord m-2">Login</button>
+      <button id="logoutButton" class="btn btn-nord m-2">Logout</button>
     </div>
   </div>
 </nav>`;
@@ -44,6 +46,7 @@ export function navbar() {
   const routeLinks = nav.querySelectorAll('.route-link');
   const loginButton = document.getElementById('loginButton');
   const registerButton = document.getElementById('registerButton');
+  const logoutButton = document.getElementById('logoutButton');
 
   loginButton?.addEventListener('click', openLoginModal);
   registerButton?.addEventListener('click', () => {
@@ -57,5 +60,11 @@ export function navbar() {
         bsCollapse.hide();
       }
     });
+  });
+
+  logoutButton?.addEventListener('click', () => {
+    localStorage.removeItem('token');
+    alert('Logged out successfully!');
+    window.location.href = '#/home';
   });
 }

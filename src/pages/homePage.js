@@ -1,6 +1,6 @@
 import { setupPagination } from '../components/pagination.js';
 import { searchBar } from '../components/searchBar.js';
-import { fetchListings } from '../services/listingsApi.js';
+import { fetchAllListings } from '../services/listingsApi.js';
 import { setupHomeControls } from '../components/homeControls.js';
 import { filtersDropdown } from '../components/tagFilter.js';
 
@@ -24,9 +24,13 @@ export async function homePage() {
       </div>
       <div id="searchBarContainer" class="flex-grow-1"></div>
       <button id="sellButton" class="btn btn-nord">SELL</button>
-      <button id="buyButton" class="btn btn-nord">BUY</button>
     </div>
-    
+
+    <select id="sortOptions" class="form-select form-select-sm mb-4 w-auto">
+      <option value="newest">Newest</option>
+      <option value="endingSoon">Ending Soon</option>
+    </select>
+
     <section class="container mt-4">
         <h1 class="text-center mb-4">Listings</h1>
         <div id="listingContainer" class="row"></div>
@@ -40,7 +44,23 @@ export async function homePage() {
     `;
 
   try {
-    const allListings = await fetchListings();
+    const allListings = await fetchAllListings();
+    const sortOptions = document.getElementById('sortOptions');
+
+    sortOptions.addEventListener('change', () => {
+      const selected = sortOptions.value;
+      const sortedListings = [...allListings];
+
+      if (selected === 'newest') {
+        sortedListings.sort(
+          (a, b) => new Date(b.created) - new Date(a.created),
+        );
+      } else if (selected === 'endingSoon') {
+        sortedListings.sort((a, b) => new Date(a.endsAt) - new Date(b.endsAt));
+      }
+
+      setupPagination(sortedListings);
+    });
 
     setupHomeControls();
     searchBar(allListings);

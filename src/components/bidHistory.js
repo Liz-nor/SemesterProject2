@@ -20,7 +20,7 @@ export async function loadListingWithBids() {
 }
 
 export function renderBidHistory(bids) {
-  const container = document.getElementById('bidHistoryContainer');
+  const container = document.getElementById('bidHistory');
 
   if (!container) return;
 
@@ -33,7 +33,7 @@ export function renderBidHistory(bids) {
 
   bids.forEach((bid) => {
     const div = document.createElement('div');
-    div.className = 'border p-2 mb-2 rounded';
+    div.className = 'd-flex justify-content-between border p-2 mb-2 rounded';
 
     div.innerHTML = `
       <p><strong>${bid.bidder?.name || 'Unknown'}</strong></p>
