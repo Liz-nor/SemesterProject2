@@ -52,6 +52,7 @@ export function renderProfileForm({ mode = 'register', profile = {} } = {}) {
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
+
     window.location.hash = '#/profile';
     const userData = {
       name: form.name.value.trim(),

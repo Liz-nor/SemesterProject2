@@ -1,7 +1,12 @@
 import { getProfile } from '../utils/storage.js';
 import { get } from '../services/apiClient.js';
 import { isAuctionExpired } from '../utils/listingsCountdown.js';
+import { requireLogin } from '../utils/authGuard.js';
+import { openLoginModal } from '../components/modals/openLoginModal.js';
+
 export async function profilePage() {
+  if (!requireLogin()) return;
+
   const app = document.getElementById('app');
 
   const hash = window.location.hash;

@@ -27,7 +27,7 @@ export function openLoginModal() {
             required
           >
         </div>
-
+          <p>Don't have an account? <a href="#/register" id="registerLink">Register here</a></p>
         <div id="loginMessage" class="text-danger small"></div>
 
         <button type="submit" class="btn btn-primary w-100">
@@ -40,7 +40,12 @@ export function openLoginModal() {
   const form = document.getElementById('loginForm');
   const message = document.getElementById('loginMessage');
   const emailInput = document.getElementById('loginEmail');
+  const registerLink = document.getElementById('registerLink');
 
+  registerLink.addEventListener('click', () => {
+    modalInstance.hide();
+    window.location.hash = '#/register';
+  });
   modalElement.addEventListener('shown.bs.modal', () => {
     emailInput?.focus();
   });
@@ -56,6 +61,7 @@ export function openLoginModal() {
     try {
       const profile = await loginUser(credentials);
       console.log('Login successful:', profile);
+      modalInstance.hide();
     } catch (error) {
       console.error(error.message);
     }

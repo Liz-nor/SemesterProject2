@@ -72,3 +72,32 @@ function setupTagFilters(allListings) {
     });
   });
 }
+
+export function similarListings(listing) {
+  const container = document.getElementById('similarListings');
+  if (!listing.tags || listing.tags.length === 0) {
+    container.innerHTML = '<p>No similar listings found.</p>';
+    return;
+  }
+  const similar = allListings.filter((item) => {
+    return item.tags?.some((tag) => listing.tags.includes(tag));
+  });
+  if (similar.length === 0) {
+    container.innerHTML = '<p>No similar listings found.</p>';
+    return;
+  }
+  container.innerHTML = similar
+    .map(
+      (item) => `
+        <div class="col-md-4">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">${item.title}</h5>
+              <p class="card-text">${item.description}</p>
+            </div>
+          </div>
+        </div>
+      `,
+    )
+    .join('');
+}

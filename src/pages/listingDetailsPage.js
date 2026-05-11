@@ -2,6 +2,9 @@ import { BASE_URL } from '../services/apiClient.js';
 import { formatDate } from '../utils/formatDate.js';
 import { renderBidHistory } from '../components/bidHistory.js';
 import { getHighestBid } from '../utils/highestBids.js';
+import { openBidModal } from '../components/modals/openBidModal.js';
+import { isAuctionExpired } from '../utils/listingsCountdown.js';
+import { similarListings } from '../components/tagFilter.js';
 
 export async function listingDetailsPage() {
   const app = document.getElementById('app');
@@ -52,6 +55,9 @@ export async function listingDetailsPage() {
               <p>Highest Bid: <strong>${getHighestBid(listing.bids) ?? 'No bids yet'}</strong></p>
               <p class="card-text"><strong>Details about this listing:</strong> ${listing.description}</p>
               <p>Ends at: ${formatDate(listing.endsAt)}</p>
+              <button id="placeBidBtn" class="btn btn-nord mt-2" ${isAuctionExpired(listing.endsAt) ? 'disabled' : ''}>
+                ${isAuctionExpired(listing.endsAt) ? 'Auction Ended' : 'Place Bid'}
+              </button>
             </div>
           </div>
         </div>
@@ -63,8 +69,18 @@ export async function listingDetailsPage() {
         </div>
       </div>
     </div>
+    <aside class="similar-listings-container container my-4">
+      <h2 class="h4 mb-3">Similar Listings</h2>
+      <div id="similarListings" class="row g-4">egethertah</div>
+    </aside>
     `;
     renderBidHistory(listing.bids);
+
+    const placeBidBtn = app.querySelector('#placeBidBtn');
+    if (placeBidBtn && !isAuctionExpired(listing.endsAt)) {
+      placeBidBtn.addEventListener('click', () => openBidModal(listing));
+    }
+
     const heroImage = app.querySelector('#heroImage');
     const allImages = listing.media || [];
 
@@ -91,6 +107,7 @@ export async function listingDetailsPage() {
 
       const cardBody = app.querySelector('.card-body');
       cardBody.insertBefore(thumbnailContainer, heroImage.nextSibling);
+      similarListings(listing);
     }
   } catch (error) {
     app.innerHTML = `<p>Something went wrong</p>`;

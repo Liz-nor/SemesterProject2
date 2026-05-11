@@ -1,3 +1,4 @@
+import { openLoginModal } from '../components/modals/openLoginModal';
 import { showModal } from '../components/modals/showModal';
 
 export function requireLogin() {
@@ -5,14 +6,8 @@ export function requireLogin() {
 
   if (token) {
     return true;
+  } else {
+    openLoginModal();
+    return false;
   }
-
-  showModal({
-    title: 'Login Required',
-    body: `
-        <p>You need to be logged in to access this page.</p>
-        <a href="#/login" class="btn btn-primary">Go to Login</a>
-        `,
-  });
-  return false;
 }

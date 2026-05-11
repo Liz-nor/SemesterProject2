@@ -3,6 +3,7 @@ import { searchBar } from '../components/searchBar.js';
 import { fetchAllListings } from '../services/listingsApi.js';
 import { setupHomeControls } from '../components/homeControls.js';
 import { filtersDropdown } from '../components/tagFilter.js';
+import { requireLogin } from '../utils/authGuard.js';
 
 export async function homePage() {
   const app = document.getElementById('app');

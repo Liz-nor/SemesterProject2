@@ -15,6 +15,8 @@ export function renderAddCard(container) {
   const createBtn = addCard.querySelector('#create-listing-btn');
   createBtn.addEventListener('click', () => {
     if (requireLogin()) {
+      window.location.href = '#/login';
+    } else {
       window.location.href = '#/create-listing';
     }
   });

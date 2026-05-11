@@ -15,7 +15,7 @@ export function navbar() {
     style="height: 50px;"
     src="../public/images/nordbidLogo.png" 
     alt="NordBid Logo"></a>
-    <p class="mt-3">Simple. Fair. Nordic.</p>
+    <p class="mt-3"><strong>Simple. Fair. Nordic.</strong></p>
     <button
     class="navbar-toggler"
       type="button" 
@@ -26,31 +26,61 @@ export function navbar() {
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item m-2">
-          <a class="nav-link route-link active btn-nord btn" aria-current="page" href="#/home">Home</a>
+          <a class="nav-link route-link active " aria-current="page" href="#/home">Home</a>
         </li>
         <li class="nav-item m-2">
-          <a class="nav-link route-link btn-nord btn" href="#/profile" onclick="if (!requireLogin()) return;">My Profile</a>
-        </li>       
+          <a id="profileButton" class="nav-link route-link" href="#/profile">My Profile</a>
+        </li> 
+        <li class="nav-item m-2">
+          <a id="registerButton" class="nav-link route-link" href="#/register">Register</a>
+        </li> 
+        <li class="nav-item m-2">
+          <a id="loginButton" class="nav-link route-link" href="#">Login</a>
+        </li>
+        <li class="nav-item m-2">
+          <a id="logoutButton" class="nav-link route-link" href="#/">Logout</a>
+        </li>
       </ul>
-      <button id="registerButton" class="btn-nord btn m-2">Register</button>
-      <button id="loginButton" class="btn btn-nord m-2">Login</button>
-      <button id="logoutButton" class="btn btn-nord m-2">Logout</button>
     </div>
   </div>
 </nav>`;
 
   const navbarCollapseEl = document.getElementById('navbarSupportedContent');
   const routeLinks = nav.querySelectorAll('.route-link');
+  const profileButton = document.getElementById('profileButton');
   const loginButton = document.getElementById('loginButton');
   const registerButton = document.getElementById('registerButton');
   const logoutButton = document.getElementById('logoutButton');
 
-  loginButton?.addEventListener('click', openLoginModal);
-  registerButton?.addEventListener('click', () => {
-    window.location.href = '#/register';
+  const isLoggedIn = localStorage.getItem('accessToken') !== null;
+
+  profileButton.style.display = isLoggedIn ? '' : 'none';
+  logoutButton.style.display = isLoggedIn ? '' : 'none';
+  loginButton.style.display = isLoggedIn ? 'none' : '';
+  registerButton.style.display = isLoggedIn ? 'none' : '';
+
+  loginButton?.addEventListener('click', (event) => {
+    event.preventDefault();
+    openLoginModal();
+  });
+
+  profileButton?.addEventListener('click', (event) => {
+    if (!requireLogin()) {
+      event.preventDefault();
+    }
+  });
+
+  logoutButton?.addEventListener('click', () => {
+    if (!requireLogin()) return;
+    {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('profile');
+      alert('Logged out successfully!');
+      window.location.href = '#/home';
+    }
   });
 
   routeLinks.forEach((link) => {
@@ -60,11 +90,5 @@ export function navbar() {
         bsCollapse.hide();
       }
     });
-  });
-
-  logoutButton?.addEventListener('click', () => {
-    localStorage.removeItem('token');
-    alert('Logged out successfully!');
-    window.location.href = '#/home';
   });
 }
