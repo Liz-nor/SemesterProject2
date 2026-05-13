@@ -4,7 +4,8 @@ import { renderBidHistory } from '../components/bidHistory.js';
 import { getHighestBid } from '../utils/highestBids.js';
 import { openBidModal } from '../components/modals/openBidModal.js';
 import { isAuctionExpired } from '../utils/listingsCountdown.js';
-import { similarListings } from '../components/tagFilter.js';
+import { getSimilarListings } from '../components/tagFilter.js';
+import { getProfile } from '../utils/storage.js';
 
 export async function listingDetailsPage() {
   const app = document.getElementById('app');
@@ -29,6 +30,8 @@ export async function listingDetailsPage() {
 
     const listing = data.data;
     const hasImage = !!listing.media?.[0]?.url;
+    const myProfile = getProfile();
+    const backUrl = listing.seller?.name === myProfile?.name ? `#/profile` : `#/home`;
 
     app.innerHTML = `
     <div class="container my-4">
@@ -45,8 +48,8 @@ export async function listingDetailsPage() {
                       src="${listing.media?.[0]?.url}"
                       alt="${listing.title}"
                       class="img-fluid mb-2 w-100"
-                      style="max-height: 400px; object-fit: contain;">`
-                  : `<div class="d-flex align-items-center justify-content-center bg-light text-muted" style="height: 400px;">
+                      style="max-height: 350px; object-fit: cover;">`
+                  : `<div class="d-flex align-items-center justify-content-center bg-light text-muted" style="height: 350px;">
                       <i class="bi bi-image" style="font-size: 2rem;"></i>
                       <span class="text-muted">No image available</span>
                     </div>`
@@ -55,9 +58,12 @@ export async function listingDetailsPage() {
               <p>Highest Bid: <strong>${getHighestBid(listing.bids) ?? 'No bids yet'}</strong></p>
               <p class="card-text"><strong>Details about this listing:</strong> ${listing.description}</p>
               <p>Ends at: ${formatDate(listing.endsAt)}</p>
-              <button id="placeBidBtn" class="btn btn-nord mt-2" ${isAuctionExpired(listing.endsAt) ? 'disabled' : ''}>
-                ${isAuctionExpired(listing.endsAt) ? 'Auction Ended' : 'Place Bid'}
-              </button>
+              <div class="d-flex gap-2">
+                <button id="placeBidBtn" class="btn btn-nord mt-2" ${isAuctionExpired(listing.endsAt) ? 'disabled' : ''}>
+                  ${isAuctionExpired(listing.endsAt) ? 'Auction Ended' : 'Place Bid'}
+                </button>
+                <button class="btn btn-secondary mt-2" onclick="window.location.hash='${backUrl}'">Back</button>
+              </div>
             </div>
           </div>
         </div>
@@ -107,7 +113,6 @@ export async function listingDetailsPage() {
 
       const cardBody = app.querySelector('.card-body');
       cardBody.insertBefore(thumbnailContainer, heroImage.nextSibling);
-      similarListings(listing);
     }
   } catch (error) {
     app.innerHTML = `<p>Something went wrong</p>`;

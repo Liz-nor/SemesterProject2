@@ -10,7 +10,7 @@ export function searchBar(allListings) {
 
   container.innerHTML = `
   <div class="input-group">
-      <input id="searchInput" class="form-control" placeholder="Search listings...">
+      <input id="searchInput" class="form-control" placeholder="What are you looking for today?" aria-label="Search" type="search">
       <button id="searchButton" class="btn btn-nord">
         <i class="bi bi-search"></i>
       </button>

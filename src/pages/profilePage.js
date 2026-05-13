@@ -56,32 +56,36 @@ export async function profilePage() {
     const data = res.data;
     profileContainer.innerHTML = `
     <section class="container my-5">
-      <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
-        <img
-        src="${data.banner.url}"
-        class="card-img-top"  
-        style="height: 100px; object-fit: cover;"
-        alt="${data.banner.alt || name}" />
-
-        <div class="card-body">
-          <div class="d-flex flex-column flex-md-row align-items-md-end gap-3">
-            <img 
+      <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-visible">
+        <div class="position-relative">
+          <img
+            src="${data.banner.url}"
+            class="w-100 rounded-top-4"
+            style="height: 200px; object-fit: cover; object-position: center;"
+            alt="${data.banner.alt || name}" />
+          <img
             src="${data.avatar.url}"
-            class="rounded-circle"  
-            style="width: 110px; height: 110px; object-fit: cover; margin-top: -70px;"
+            class="rounded-circle border border-4 border-white position-absolute"
+            style="width: 150px; height: 150px; object-fit: cover; bottom: -75px; left: 1.5rem;"
             alt="${data.avatar.alt || name}" />
+        </div>
 
-        <div class="flex-grow-1">
-          <h2 class="h3 mb-1">
-          ${data.name}</h2>
-          <p class="text-muted mb-2">${data.bio}</p>
-          <span class="badge bg-info text-dark">Credits: ${data.credits}</span>
-          <p class="text-muted mb-2">${data._count?.listings ?? 0} listings &nbsp; ${data._count?.wins ?? 0} wins &nbsp</p>
-        </div>
-        <div class="d-flex gap-2">
-        ${isOwnProfile ? `<a href="#/edit-profile/${data.name}" class="btn btn-nord">Edit Profile</a>` : ''}
-        ${isOwnProfile ? `<a href="#/create-listing" class="btn btn-nord">Create Listing</a>` : ''}
-        </div>
+        <div class="card-body" style="padding-top: 4.5rem;">
+          <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+            <div>
+              <h2 class="h3 mb-1">${data.name}</h2>
+              <p class="text-muted mb-2">${data.bio}</p>
+              <span class="badge bg-info text-dark">Credits: ${data.credits}</span>
+              <p class="text-muted mt-2 mb-0">
+                <strong>${data._count?.listings ?? 0}</strong> listings &nbsp;
+                <strong>${data._count?.wins ?? 0}</strong> wins
+              </p>
+            </div>
+            <div class="d-flex gap-2 flex-shrink-0">
+              ${isOwnProfile ? `<a href="#/edit-profile/${data.name}" class="btn btn-nord">Edit Profile</a>` : ''}
+              ${isOwnProfile ? `<a href="#/create-listing" class="btn btn-nord">Create Listing</a>` : ''}
+            </div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Vend+Sans:ital,wght@0,300..700;1,300..700&display=swap');
+
+h1,
+h2,
+h3 {
+  font-family: 'Playfair Display', serif;
+}
+
+p,
+button,
+a,
+.btn,
+span {
+  font-family: 'Vend Sans', sans-serif;
+}
+
 .btn-primary {
   --bs-btn-bg: #1800a2;
   --bs-btn-border-color: #ffffff;
@@ -19,6 +35,7 @@
   background-color: #1800a2 !important;
   border: none !important;
   color: #ffffff !important;
+  font-family: 'Vend Sans', Courier, monospace !important;
 }
 .btn-nord:hover {
   background-color: #0024c7 !important;

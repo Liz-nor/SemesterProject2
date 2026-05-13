@@ -20,6 +20,7 @@ export function renderProfileForm({ profile = null } = {}) {
         <input name="bannerPictureUrl" type="url" class="form-control" id="bannerPictureUrl" placeholder="https://example.com/banner.jpg" value="${profile?.banner?.url || ''}">
       </div>
       <button type="submit" class="btn btn-nord mb-3">Save Changes</button>
+      <button type="button" class="btn btn-secondary mb-3" onclick="window.location.hash='#/profile'">Cancel</button>
     </form>
   `;
 }

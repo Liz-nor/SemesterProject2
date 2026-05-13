@@ -26,14 +26,16 @@ export async function renderEditListingPage() {
         .split(',')
         .map((tag) => tag.trim())
         .filter(Boolean),
-      media: [
-        {
-          url: listingForm.imageUrl.value.trim(),
-          alt: listingForm.imageAlt.value.trim(),
-        },
-      ],
+      media: [...listingForm.querySelectorAll('.image-entry')]
+        .map((entry) => ({
+          url: entry.querySelector('.image-url-input').value.trim(),
+          alt: entry.querySelector('.image-alt-input').value.trim(),
+        }))
+        .filter((m) => m.url),
     };
 
     await put(`/auction/listings/${listingId}`, updatedListing);
+    alert('Listing updated successfully!');
+    window.location.href = `#/listings/${listingId}`;
   });
 }

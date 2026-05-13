@@ -1,5 +1,6 @@
 import { showModal } from './showModal.js';
 import { loginUser } from '../../services/auth.js';
+import { navbar } from '../navbar.js';
 
 export function openLoginModal() {
   const { modalElement, modalInstance } = showModal({
@@ -62,6 +63,7 @@ export function openLoginModal() {
       const profile = await loginUser(credentials);
       console.log('Login successful:', profile);
       modalInstance.hide();
+      navbar();
     } catch (error) {
       console.error(error.message);
     }

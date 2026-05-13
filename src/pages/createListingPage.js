@@ -10,38 +10,14 @@ export async function createListingPage() {
 
   const form = document.getElementById('listingForm');
   const createListingsButton = document.getElementById('listingsButton');
-  const container = document.getElementById('imageInputs');
-  const addBtn = document.getElementById('addImageBtn');
-
-  addBtn.addEventListener('click', () => {
-    const inputWrapper = document.createElement('div');
-    inputWrapper.className = 'd-flex gap-2 mb-2';
-
-    inputWrapper.innerHTML = `
-      <input
-      type="text"
-      placeholder="Image URL"
-      class="form-control image-input"
-      >
-      <button type="button" class="btn btn-danger remove-btn">X</button>
-      `;
-
-    inputWrapper.querySelector('.remove-btn').addEventListener('click', () => {
-      inputWrapper.remove();
-    });
-
-    container.appendChild(inputWrapper);
-  });
 
   function getMedia() {
-    const inputs = container.querySelectorAll('.image-input');
-    return Array.from(inputs)
-      .map((input) => input.value.trim())
-      .filter(Boolean)
-      .map((url) => ({
-        url,
-        alt: document.getElementById('title').value.trim(),
-      }));
+    return [...form.querySelectorAll('.image-entry')]
+      .map((entry) => ({
+        url: entry.querySelector('.image-url-input').value.trim(),
+        alt: entry.querySelector('.image-alt-input').value.trim(),
+      }))
+      .filter((m) => m.url);
   }
 
   form.addEventListener('submit', async (e) => {

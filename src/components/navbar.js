@@ -18,30 +18,28 @@ export function navbar() {
     <p class="mt-3"><strong>Simple. Fair. Nordic.</strong></p>
     <button
     class="navbar-toggler"
-      type="button" 
-      data-bs-toggle="collapse" 
-      data-bs-target="#navbarSupportedContent" 
-      aria-controls="navbarSupportedContent" 
-      aria-expanded="false" 
+      type="button"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
       aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
       <ul class="navbar-nav mb-2 mb-lg-0">
         <li class="nav-item m-2">
-          <a class="nav-link route-link active " aria-current="page" href="#/home">Home</a>
+          <a class="nav-link route-link active" aria-current="page" href="#/home">Home</a>
         </li>
-        <li class="nav-item m-2">
-          <a id="profileButton" class="nav-link route-link" href="#/profile">My Profile</a>
-        </li> 
-        <li class="nav-item m-2">
-          <a id="registerButton" class="nav-link route-link" href="#/register">Register</a>
-        </li> 
-        <li class="nav-item m-2">
-          <a id="loginButton" class="nav-link route-link" href="#">Login</a>
+        <li id="profileButton" class="nav-item m-2">
+          <a class="nav-link route-link" href="#/profile">My Profile</a>
         </li>
-        <li class="nav-item m-2">
-          <a id="logoutButton" class="nav-link route-link" href="#/">Logout</a>
+        <li id="registerButton" class="nav-item m-2">
+          <a class="nav-link route-link" href="#/register">Register</a>
+        </li>
+        <li id="loginButton" class="nav-item m-2">
+          <a class="nav-link route-link" href="#">Login</a>
+        </li>
+        <li id="logoutButton" class="nav-item m-2">
+          <a class="nav-link route-link" href="#/">Logout</a>
         </li>
       </ul>
     </div>
@@ -49,6 +47,11 @@ export function navbar() {
 </nav>`;
 
   const navbarCollapseEl = document.getElementById('navbarSupportedContent');
+  const bsCollapse = new Collapse(navbarCollapseEl, { toggle: false });
+  nav
+    .querySelector('.navbar-toggler')
+    .addEventListener('click', () => bsCollapse.toggle());
+
   const routeLinks = nav.querySelectorAll('.route-link');
   const profileButton = document.getElementById('profileButton');
   const loginButton = document.getElementById('loginButton');
@@ -62,25 +65,22 @@ export function navbar() {
   loginButton.style.display = isLoggedIn ? 'none' : '';
   registerButton.style.display = isLoggedIn ? 'none' : '';
 
-  loginButton?.addEventListener('click', (event) => {
+  loginButton?.querySelector('a')?.addEventListener('click', (event) => {
     event.preventDefault();
     openLoginModal();
   });
 
-  profileButton?.addEventListener('click', (event) => {
+  profileButton?.querySelector('a')?.addEventListener('click', (event) => {
     if (!requireLogin()) {
       event.preventDefault();
     }
   });
 
-  logoutButton?.addEventListener('click', () => {
-    if (!requireLogin()) return;
-    {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('profile');
-      alert('Logged out successfully!');
-      window.location.href = '#/home';
-    }
+  logoutButton?.querySelector('a')?.addEventListener('click', () => {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('profile');
+    alert('Logged out successfully!');
+    window.location.href = '#/home';
   });
 
   routeLinks.forEach((link) => {
