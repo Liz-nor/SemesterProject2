@@ -1,10 +1,14 @@
 import { Collapse } from 'bootstrap';
+import { get } from '../services/apiClient.js';
 import { openLoginModal } from './modals/openLoginModal.js';
 import { requireLogin } from '../utils/authGuard.js';
+import { getProfile } from '../utils/storage.js';
 
-export function navbar() {
+export async function navbar() {
   const nav = document.getElementById('nav');
-
+  const profile = getProfile();
+  const res = await get(`/auction/profiles/${profile.name}`);
+  const data = res.data;
   nav.innerHTML = `
   <span class="seperator"></span>
   <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
@@ -42,9 +46,17 @@ export function navbar() {
           <a class="nav-link route-link" href="#/">Logout</a>
         </li>
       </ul>
+      <span id="creditBadge" class="badge bg-dark text-light">Your Credit: ${data.credits}</span>
     </div>
   </div>
 </nav>`;
+
+  const creditBadge = document.getElementById('creditBadge');
+  const updateCreditBadge = () => {
+    creditBadge.style.display = window.location.hash.startsWith('#/profile') ? 'none' : '';
+  };
+  updateCreditBadge();
+  window.addEventListener('hashchange', updateCreditBadge);
 
   const navbarCollapseEl = document.getElementById('navbarSupportedContent');
   const bsCollapse = new Collapse(navbarCollapseEl, { toggle: false });
