@@ -23,15 +23,13 @@ export async function apiClient(endpoint, options = {}) {
   };
 
   const response = await fetch(BASE_URL + endpoint, config);
+  const data = await response.json();
 
   if (!response.ok) {
-    const errorMessage = await response.json()
-      .then((data) => data?.errors?.[0]?.message)
-      .catch(() => null);
-    throw new Error(errorMessage || 'Something went wrong');
+    throw new Error('Something went wrong');
   }
 
-  return response.status !== 204 ? response.json() : {};
+  return response.status !== 204 ? data : {};
 }
 
 export function get(endpoint) {
