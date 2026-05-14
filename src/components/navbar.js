@@ -7,12 +7,18 @@ import { getProfile } from '../utils/storage.js';
 export async function navbar() {
   const nav = document.getElementById('nav');
   const profile = getProfile();
-  const res = await get(`/auction/profiles/${profile.name}`);
-  const data = res.data;
+  const isLoggedIn = localStorage.getItem('accessToken') !== null;
+
+  let data = null;
+  if (isLoggedIn && profile?.name) {
+    const res = await get(`/auction/profiles/${profile.name}`);
+    data = res.data;
+  }
+
   nav.innerHTML = `
   <span class="seperator"></span>
   <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom">
-  <div class="container-fluid">
+  <div class="container-fluid mx-4">
     <a class="navbar-brand" href="#/home">
     <img 
     class="img-fluid" 
@@ -46,17 +52,21 @@ export async function navbar() {
           <a class="nav-link route-link" href="#/">Logout</a>
         </li>
       </ul>
-      <span id="creditBadge" class="badge bg-dark text-light">Your Credit: ${data.credits}</span>
+      ${data ? `<span id="creditBadge" class="badge bg-dark text-light">Your Credit: ${data.credits}</span>` : ''}
     </div>
   </div>
 </nav>`;
 
   const creditBadge = document.getElementById('creditBadge');
-  const updateCreditBadge = () => {
-    creditBadge.style.display = window.location.hash.startsWith('#/profile') ? 'none' : '';
-  };
-  updateCreditBadge();
-  window.addEventListener('hashchange', updateCreditBadge);
+  if (creditBadge) {
+    const updateCreditBadge = () => {
+      creditBadge.style.display = window.location.hash.startsWith('#/profile')
+        ? 'none'
+        : '';
+    };
+    updateCreditBadge();
+    window.addEventListener('hashchange', updateCreditBadge);
+  }
 
   const navbarCollapseEl = document.getElementById('navbarSupportedContent');
   const bsCollapse = new Collapse(navbarCollapseEl, { toggle: false });
@@ -69,8 +79,6 @@ export async function navbar() {
   const loginButton = document.getElementById('loginButton');
   const registerButton = document.getElementById('registerButton');
   const logoutButton = document.getElementById('logoutButton');
-
-  const isLoggedIn = localStorage.getItem('accessToken') !== null;
 
   profileButton.style.display = isLoggedIn ? '' : 'none';
   logoutButton.style.display = isLoggedIn ? '' : 'none';
