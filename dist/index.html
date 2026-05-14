@@ -4,12 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/SemesterProject2/assets/favicon-16x16-C0p_O7Wd.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="shortcut icon" href="/assets/favicon-16x16-C0p_O7Wd.png" type="image/x-icon">
     <title>NordBid auctions</title>
-  <script type="module" crossorigin src="/SemesterProject2/assets/index-DxJA40em.js"></script>
-  <link rel="stylesheet" crossorigin href="/SemesterProject2/assets/index-BqT9MOn6.css">
+  <script type="module" crossorigin src="/assets/index-DFVHqMXT.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BcwD7c_W.css">
 </head>
 
 <body>
@@ -17,14 +15,34 @@
 
     </header>
     <div id="nav"></div>
-    <div class="d-flex gap-3 mt-3 mb-5 justify-content-center align-items-center border-bottom">
-        <p class="m-3"><strong> NordBid brings clarity and trust to online auctions. List your items,
-                place bids, and connect with buyers and
-                sellers in a clean, straightforward marketplace.</strong></p>
-    </div>
-    <aside id="mostRecentBids"></aside>
+
+    Discover unique items, place bids in real time, and win before the clock runs out.
+    NordBid makes online auctions simple, fast, and exciting.
+
+    <span>✔ Live bidding</span>
+    <span>✔ Secure selling</span>
+    <span>✔ Easy to use</span>
+
     <main id="app"></main>
-    <div id="modal-root"></div>
+    <div id="loginModal"></div>
+    <div id="modal-root">
+        <div class="modal fade" id="loginModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Login</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <input id="loginEmail" class="form-control" placeholder="Email">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="footer"></div>
 </body>
 

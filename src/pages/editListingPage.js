@@ -36,6 +36,6 @@ export async function renderEditListingPage() {
 
     await put(`/auction/listings/${listingId}`, updatedListing);
     alert('Listing updated successfully!');
-    window.location.hash = `#/listings/${listingId}`;
+    window.location.href = `#/listings/${listingId}`;
   });
 }

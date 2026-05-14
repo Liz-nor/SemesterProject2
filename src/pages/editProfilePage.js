@@ -19,7 +19,7 @@ export async function editProfilePage() {
   renderProfileForm({ profile });
 
   const profileForm = document.getElementById('profileForm');
-  const message = document.getElementById('message');
+
   profileForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -36,10 +36,5 @@ export async function editProfilePage() {
     };
 
     await put(`/auction/profiles/${profileId}`, updatedProfile);
-    message.textContent = 'Profile updated successfully!';
-
-    setTimeout(() => {
-      window.location.hash = `#/profile/${profile.name}`;
-    }, 3000);
   });
 }

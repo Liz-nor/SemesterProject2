@@ -1,7 +1,6 @@
 import { showModal } from './showModal.js';
 import { loginUser } from '../../services/auth.js';
 import { navbar } from '../navbar.js';
-import { router } from '../../router/router.js';
 
 export function openLoginModal() {
   const { modalElement, modalInstance } = showModal({
@@ -15,10 +14,8 @@ export function openLoginModal() {
             class="form-control"
             id="loginEmail"
             name="email"
-            placeholder="name@stud.noroff.no"
             required
           >
-          <div class="form-text">Must be your @stud.noroff.no address.</div>
         </div>
 
         <div class="mb-3">
@@ -57,23 +54,18 @@ export function openLoginModal() {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
-
-    if (!email.endsWith('@stud.noroff.no')) {
-      message.textContent = 'Email must be a @stud.noroff.no address.';
-      return;
-    }
-
-    const credentials = { email, password };
+    const credentials = {
+      email: form.email.value.trim(),
+      password: form.password.value.trim(),
+    };
 
     try {
-      await loginUser(credentials);
+      const profile = await loginUser(credentials);
+      console.log('Login successful:', profile);
       modalInstance.hide();
-      await navbar();
-      router();
+      navbar();
     } catch (error) {
-      message.textContent = error.message;
+      console.error(error.message);
     }
   });
 }
