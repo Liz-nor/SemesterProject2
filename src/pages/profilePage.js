@@ -1,8 +1,9 @@
 import { getProfile } from '../utils/storage.js';
 import { get } from '../services/apiClient.js';
-import { isAuctionExpired } from '../utils/listingsCountdown.js';
+import { isAuctionExpired, getCountdown } from '../utils/listingsCountdown.js';
 import { requireLogin } from '../utils/authGuard.js';
 import { openLoginModal } from '../components/modals/openLoginModal.js';
+import { getHighestBid } from '../utils/highestBids.js';
 
 export async function profilePage() {
   if (!requireLogin()) return;
@@ -74,7 +75,7 @@ export async function profilePage() {
           <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
             <div>
               <h2 class="h3 mb-1">${data.name}</h2>
-              <p class="text-muted mb-2">${data.bio}</p>
+              <p class="text-muted mb-2">${data.bio || 'No bio added yet.'}</p>
               <span class="badge bg-info text-dark">Credits: ${data.credits}</span>
               <p class="text-muted mt-2 mb-0">
                 <strong>${data._count?.listings ?? 0}</strong> listings &nbsp;
@@ -96,32 +97,39 @@ export async function profilePage() {
         e.target.matches('.btn-nord') &&
         e.target.textContent === 'Create Listing'
       ) {
-        window.location.href = '#/create-listing';
+        window.location.hash = '#/create-listing';
       }
     });
   }
 
   async function loadListings() {
     const res = await get(
-      `/auction/profiles/${name}/listings?sort=created&sortOrder=desc`,
+      `/auction/profiles/${name}/listings?sort=created&sortOrder=desc&_bids=true`,
     );
     const listings = res.data;
     if (!listings?.length) {
       listingsContainer.innerHTML = '<p>No listings yet.</p>';
       return;
     }
-
     listingsContainer.innerHTML = listings
       .map(
         (listing) => `
       <div class="col">
-        <div class="card h-100 p-3 hover-shadow">
+        <div class="card h-100 p-3 hover-shadow d-flex flex-column">
           <h3 class="h4 mb-3">${listing.title}</h3>
           <img class="banner-image img-fluid rounded-4" style="height: 300px; background-size: cover; background-position: center;" src="${listing.media?.[0]?.url}" alt="${listing.media?.[0]?.alt || listing.title}" onerror="this.onerror=null; this.src='images/no-image.png';" />
           <p>${listing.description}</p>
-          <p class="text-muted mb-0">Created at: ${new Date(listing.created).toLocaleString()}</p>
-          <p class="text-muted mb-0">Ends at: ${new Date(listing.endsAt).toLocaleString()}</p>
-          <div class="post-actions d-flex gap-2">
+            <div class="d-flex justify-content-around gap-3 align-items-center text-center my-3">
+              <div>
+                <p class="text-danger fw-bold mb-0">${getCountdown(listing.endsAt)}</p>
+                <p>Ends in</p>
+              </div>
+              <div>
+                <p class="text-danger fw-bold mb-0">${getHighestBid(listing.bids) ?? '—'}</p>
+                <p>Highest Bid</p>
+              </div>
+            </div>
+          <div class="post-actions d-flex gap-2 mt-auto pt-2">
             <a href="#/listing/${listing.id}" class="card-link btn btn-nord">View</a>
             ${isOwnProfile ? `<a href="#/edit-listing/${listing.id}" class="card-link btn btn-nord edit-btn" data-expired="${isAuctionExpired(listing.endsAt)}">Edit</a>` : ''}
             ${isOwnProfile ? `<a href="#/delete-listing/${listing.id}" class="card-link btn btn-nord delete-btn" data-expired="${isAuctionExpired(listing.endsAt)}">Delete</a>` : ''}
@@ -191,7 +199,7 @@ export async function profilePage() {
           <a href="#/listing/${win.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <div>
               <h5 class="mb-1">${win.title ?? 'Unknown Listing'}</h5>
-              <small class="text-muted">Auction Ended at: ${new Date(win.endsAt).toLocaleString()}</small>
+              <small class="text-muted">Auction Ended at: ${getCountdown(win.endsAt)}</small>
             </div>
             <span class="badge bg-success rounded-pill">Won</span>
           </a>

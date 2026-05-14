@@ -6,6 +6,8 @@ import { openBidModal } from '../components/modals/openBidModal.js';
 import { isAuctionExpired } from '../utils/listingsCountdown.js';
 import { getSimilarListings } from '../components/tagFilter.js';
 import { getProfile } from '../utils/storage.js';
+import { fetchAllListings } from '../services/listingsApi.js';
+import { generateListings } from '../components/listingCard.js';
 
 export async function listingDetailsPage() {
   const app = document.getElementById('app');
@@ -77,7 +79,7 @@ export async function listingDetailsPage() {
     </div>
     <aside class="similar-listings-container container my-4">
       <h2 class="h4 mb-3">Similar Listings</h2>
-      <div id="similarListings" class="row g-4">egethertah</div>
+      <div id="similarListings" class="row g-4"></div>
     </aside>
     `;
     renderBidHistory(listing.bids);
@@ -90,29 +92,41 @@ export async function listingDetailsPage() {
     const heroImage = app.querySelector('#heroImage');
     const allImages = listing.media || [];
 
-    if (heroImage && allImages?.length > 1) {
+    if (heroImage && allImages.length > 1) {
       const thumbnailContainer = document.createElement('div');
-      thumbnailContainer.className = 'd-flex gap-2 mb-3 flex-wrap';
+      thumbnailContainer.className = 'd-flex gap-2 mt-2 mb-3 flex-wrap justify-content-center';
 
       allImages.forEach((img, index) => {
         const thumb = document.createElement('img');
         thumb.src = img.url;
-        thumb.alt = listing.title;
-        thumb.style.cssText = `height: 70px; width: 70px; object-fit: cover; cursor: pointer; border: 2px solid ${index === 0 ? '#0d6efd' : 'transparent'}; border-radius: 4px;`;
+        thumb.alt = img.alt || listing.title;
+        thumb.style.cssText = `height: 70px; width: 70px; object-fit: cover; cursor: pointer; border: 2px solid ${index === 0 ? '#1800a2' : 'transparent'}; border-radius: 4px;`;
 
         thumb.addEventListener('click', () => {
           heroImage.src = img.url;
           thumbnailContainer
             .querySelectorAll('img')
             .forEach((t) => (t.style.borderColor = 'transparent'));
-          thumb.style.borderColor = '#0d6efd';
+          thumb.style.borderColor = '#1800a2';
         });
 
         thumbnailContainer.appendChild(thumb);
       });
 
-      const cardBody = app.querySelector('.card-body');
-      cardBody.insertBefore(thumbnailContainer, heroImage.nextSibling);
+      heroImage.insertAdjacentElement('afterend', thumbnailContainer);
+    }
+
+    const similarContainer = document.getElementById('similarListings');
+    try {
+      const allListings = await fetchAllListings();
+      const similar = getSimilarListings(allListings, listing).slice(0, 6);
+      if (similar.length) {
+        generateListings(similar, similarContainer);
+      } else {
+        similarContainer.innerHTML = '<p class="text-muted">No similar listings found.</p>';
+      }
+    } catch {
+      similarContainer.innerHTML = '<p class="text-muted">Could not load similar listings.</p>';
     }
   } catch (error) {
     app.innerHTML = `<p>Something went wrong</p>`;

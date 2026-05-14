@@ -14,8 +14,6 @@ export function generateListings(listings, container) {
     if (index === 3) {
       renderAddCard(container);
     }
-    console.log('listing item:', item);
-    console.log('listing id:', item.id);
     const highestBid = getHighestBid(item.bids);
 
     const card = document.createElement('div');
