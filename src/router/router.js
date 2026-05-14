@@ -1,6 +1,6 @@
 import { homePage } from '../pages/homePage.js';
 import { profilePage } from '../pages/profilePage.js';
-import { renderProfileForm } from '../pages/profileForm.js';
+import { renderProfileForm } from '../pages/registerPage.js';
 import { listingDetailsPage } from '../pages/listingDetailsPage.js';
 import { createListingPage } from '../pages/createListingPage.js';
 import { renderEditListingPage } from '../pages/editListingPage.js';

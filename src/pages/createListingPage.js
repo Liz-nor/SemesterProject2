@@ -45,15 +45,13 @@ export async function createListingPage() {
       endsAt: new Date(endDate).toISOString(),
       ...(media.length ? { media } : {}),
     };
-    console.log('media:', media);
-    console.log('payload:', payload);
     createListingsButton.disabled = true;
     createListingsButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating...`;
 
     try {
       await post('/auction/listings', payload);
       alert('Listing created successfully!');
-      window.location.href = '#/profile';
+      window.location.hash = '#/profile';
     } catch (error) {
       console.error('Error creating listing:', error);
       createListingsButton.disabled = false;
