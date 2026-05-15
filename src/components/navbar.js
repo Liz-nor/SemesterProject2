@@ -23,7 +23,7 @@ export async function navbar() {
     <img 
     class="img-fluid" 
     style="height: 50px;"
-    src="../public/images/nordbidLogo.png" 
+    src="./images/nordbidLogo.png" 
     alt="NordBid Logo"></a>
     <p class="mt-3"><strong>Simple. Fair. Nordic.</strong></p>
     <button

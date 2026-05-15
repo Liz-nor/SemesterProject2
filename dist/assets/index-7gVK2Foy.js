@@ -58,7 +58,7 @@ var e=Object.defineProperty,t=(t,n)=>{let r={};for(var i in t)e(r,i,{get:t[i],en
     <img 
     class="img-fluid" 
     style="height: 50px;"
-    src="../public/images/nordbidLogo.png" 
+    src="./images/nordbidLogo.png" 
     alt="NordBid Logo"></a>
     <p class="mt-3"><strong>Simple. Fair. Nordic.</strong></p>
     <button
