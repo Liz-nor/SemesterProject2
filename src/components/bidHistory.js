@@ -31,7 +31,9 @@ export function renderBidHistory(bids) {
     return;
   }
 
-  bids.forEach((bid) => {
+  const sorted = [...bids].sort((a, b) => b.amount - a.amount);
+
+  sorted.forEach((bid) => {
     const div = document.createElement('div');
     div.className = 'd-flex justify-content-between border p-2 mb-2 rounded';
 

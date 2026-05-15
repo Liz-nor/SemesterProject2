@@ -33,7 +33,8 @@ export async function listingDetailsPage() {
     const listing = data.data;
     const hasImage = !!listing.media?.[0]?.url;
     const myProfile = getProfile();
-    const backUrl = listing.seller?.name === myProfile?.name ? `#/profile` : `#/home`;
+    const backUrl =
+      listing.seller?.name === myProfile?.name ? `#/profile` : `#/home`;
 
     app.innerHTML = `
     <div class="container my-4">
@@ -57,9 +58,17 @@ export async function listingDetailsPage() {
                     </div>`
               }
               <p>Listed by: <a href="${listing.seller?.name ? `#/profile/${listing.seller.name}` : '#'}" class="text-decoration-none">${listing.seller?.name || 'Unknown Seller'}</a></p>
-              <p>Highest Bid: <strong>${getHighestBid(listing.bids) ?? 'No bids yet'}</strong></p>
               <p class="card-text"><strong>Details about this listing:</strong> ${listing.description}</p>
-              <p>Ends at: ${formatDate(listing.endsAt)}</p>
+              <div class="d-flex justify-content-around gap-4 align-items-center text-center my-3">
+                <div>
+                  <p class="text-danger fw-bold mb-1">${formatDate(listing.endsAt)}</p>
+                  <p>Ends at</p>
+                </div>
+                <div>
+                  <p class="text-danger fw-bold mb-1">${getHighestBid(listing.bids) ?? '—'}</p>
+                  <p>Highest Bid</p>
+                </div>
+              </div>
               <div class="d-flex gap-2">
                 <button id="placeBidBtn" class="btn btn-nord mt-2" ${isAuctionExpired(listing.endsAt) ? 'disabled' : ''}>
                   ${isAuctionExpired(listing.endsAt) ? 'Auction Ended' : 'Place Bid'}
@@ -94,7 +103,8 @@ export async function listingDetailsPage() {
 
     if (heroImage && allImages.length > 1) {
       const thumbnailContainer = document.createElement('div');
-      thumbnailContainer.className = 'd-flex gap-2 mt-2 mb-3 flex-wrap justify-content-center';
+      thumbnailContainer.className =
+        'd-flex gap-2 mt-2 mb-3 flex-wrap justify-content-center';
 
       allImages.forEach((img, index) => {
         const thumb = document.createElement('img');
@@ -123,10 +133,12 @@ export async function listingDetailsPage() {
       if (similar.length) {
         generateListings(similar, similarContainer);
       } else {
-        similarContainer.innerHTML = '<p class="text-muted">No similar listings found.</p>';
+        similarContainer.innerHTML =
+          '<p class="text-muted">No similar listings found.</p>';
       }
     } catch {
-      similarContainer.innerHTML = '<p class="text-muted">Could not load similar listings.</p>';
+      similarContainer.innerHTML =
+        '<p class="text-muted">Could not load similar listings.</p>';
     }
   } catch (error) {
     app.innerHTML = `<p>Something went wrong</p>`;

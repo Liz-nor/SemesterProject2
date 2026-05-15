@@ -31,7 +31,7 @@ export async function profilePage() {
       <div class="" id="profileContainer"></div>
       <h2 class="border-bottom">My Listings</h2>
       <div id="listingsContainer"></div>
-      <h2 class="border-bottom">Personal Bid History</h2>
+      <h2 class="border-bottom">My Bid History</h2>
       <div id="personalBidHistoryContainer"></div>
       <h2 class="border-bottom">Won Listings</h2>
       <div id="wonListingsContainer"></div>
@@ -161,8 +161,7 @@ export async function profilePage() {
     }
 
     personalBidHistoryContainer.innerHTML = `
-      <h2 class="h4 mb-3">My Bids</h2>
-      <div class="list-group">
+      <div class="list-group mb-5">
         ${bids
           .map(
             (bid) => `
@@ -191,15 +190,14 @@ export async function profilePage() {
     }
 
     wonListingsContainer.innerHTML = `
-      <h2 class="h4 mb-3">Won Listings</h2>
-      <div class="list-group">
+      <div class="list-group mb-5">
         ${wins
           .map(
             (win) => `
           <a href="#/listing/${win.id}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
             <div>
               <h5 class="mb-1">${win.title ?? 'Unknown Listing'}</h5>
-              <small class="text-muted">Auction Ended at: ${getCountdown(win.endsAt)}</small>
+              <small class="text-muted">${getCountdown(win.endsAt)}</small>
             </div>
             <span class="badge bg-success rounded-pill">Won</span>
           </a>
