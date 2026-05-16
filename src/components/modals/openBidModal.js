@@ -50,7 +50,7 @@ export function openBidModal(item) {
     try {
       await placeBid(item.id, amount);
       modalInstance.hide();
-      alert('Bid placed successfully!');
+      bidMessage.textContent = 'Bid placed successfully!';
     } catch (error) {
       console.error('Error placing bid:', error);
       bidMessage.textContent = 'Failed to place bid. Please try again.';

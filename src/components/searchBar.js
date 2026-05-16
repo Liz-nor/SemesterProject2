@@ -22,6 +22,9 @@ export function searchBar(allListings) {
 
   function handleSearch() {
     const query = searchInput.value.trim().toLowerCase();
+    searchInput.addEventListener('input', () => {
+      if (serarchInput.value === '') handleSearch();
+    });
 
     const filteredListings = query
       ? allListings.filter((item) => {

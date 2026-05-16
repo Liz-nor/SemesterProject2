@@ -29,6 +29,7 @@ export function renderListingForm({ mode = 'create', listing = null } = {}) {
         <div id="imageInputs"></div>
         <button type="button" id="addImageBtn" class="btn btn-secondary mt-2">Add image</button>
       </div>
+      <div id="formMessage" class="text-success mb-3"></div>
       <button id="listingsButton" type="submit" class="btn btn-nord mb-3">${mode === 'edit' ? 'Update listing' : 'Create Listing'}</button>
       <button type="button" class="btn btn-secondary mb-3" onclick="window.location.hash='#/profile'">Cancel</button>
     </form>

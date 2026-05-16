@@ -23,14 +23,15 @@ export async function homePage() {
             </div>
           </div>
       </div>
+      <select id="sortOptions" class="btn btn-outline-secondary form-select form-select-sm m-3 w-auto">
+      <option value="newest">Newest</option>
+      <option value="endingSoon">Ending Soon</option>
+    </select>
       <div id="searchBarContainer" class="flex-grow-1"></div>
       <button id="sellButton" class="btn btn-nord">SELL</button>
     </div>
 
-    <select id="sortOptions" class="form-select form-select-sm mb-4 w-auto">
-      <option value="newest">Newest</option>
-      <option value="endingSoon">Ending Soon</option>
-    </select>
+    
 
     <section class="container mt-4">
         <h1 class="text-center mb-4">Listings</h1>
@@ -50,14 +51,17 @@ export async function homePage() {
 
     sortOptions.addEventListener('change', () => {
       const selected = sortOptions.value;
-      const sortedListings = [...allListings];
+      let sortedListings = [...allListings];
 
       if (selected === 'newest') {
         sortedListings.sort(
           (a, b) => new Date(b.created) - new Date(a.created),
         );
       } else if (selected === 'endingSoon') {
-        sortedListings.sort((a, b) => new Date(a.endsAt) - new Date(b.endsAt));
+        const now = new Date();
+        sortedListings = sortedListings
+          .filter((listing) => new Date(listing.endsAt) > now)
+          .sort((a, b) => new Date(a.endsAt) - new Date(b.endsAt));
       }
 
       setupPagination(sortedListings);

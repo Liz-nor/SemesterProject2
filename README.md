@@ -6,7 +6,7 @@
 
 ---
 
-This assignment focuses on building a social media app where you can read other peoples posts, follow their profiles, create your own post as well as edit or delete them. Be sure to include a fun bio to make you stand out in the crowd.
+This assignment focuses on building an auction site where you can register, login and make your own listings. When registering you are automatically allocated 1000 credits to start the bidding on others listings. You are also able to look at other sellers listings on their profile.
 
 INSERT IMAGE HERE!!
 
@@ -14,7 +14,7 @@ Please follow this link to the project: https://github.com/Liz-nor/SemesterProje
 
 ## Description
 
-- MORE TEXT HERE!!!
+- Welcome to the world of easily acquiring products in a bidding war and making your own listings. At NordBid we want
 
 ---
 
@@ -23,14 +23,14 @@ Please follow this link to the project: https://github.com/Liz-nor/SemesterProje
 - Registering a new user
 - Login in to your account
 - Getting all listings made by you and other users
-- Getting a single listing
+- Seeing a single listing
 - Creating your own listing
 - Editing your own listing
 - Deleting your own listing
 - Seeing other peoples listings collectively
-- Being able to follow and unfollow users
-- Search for titles, descriptionwords tags from listings
+- Search for titles, description or word tags from listings
 - Viewing your profile and others
+- Seeing your former bids and win history
 
 ## 📦 Installation
 

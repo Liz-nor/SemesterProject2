@@ -1,5 +1,6 @@
 import { renderListingForm } from '../components/listingForm.js';
 import { get, put } from '../services/apiClient.js';
+import { profilePage } from './profilePage.js';
 
 export async function renderEditListingPage() {
   const listingId = window.location.hash.split('/')[2];
@@ -14,7 +15,7 @@ export async function renderEditListingPage() {
   });
 
   const listingForm = document.getElementById('listingForm');
-
+  const editFormMessage = document.getElementById('formMessage');
   listingForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
@@ -35,7 +36,9 @@ export async function renderEditListingPage() {
     };
 
     await put(`/auction/listings/${listingId}`, updatedListing);
-    alert('Listing updated successfully!');
-    window.location.href = `#/listings/${listingId}`;
+    editFormMessage.textContent = 'Listing updated successfully!';
+    setTimeout(() => {
+      window.location.href = `#/profile`;
+    }, 1000);
   });
 }

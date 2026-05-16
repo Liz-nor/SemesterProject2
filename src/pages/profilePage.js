@@ -1,9 +1,10 @@
 import { getProfile } from '../utils/storage.js';
-import { get } from '../services/apiClient.js';
+import { get, del } from '../services/apiClient.js';
 import { isAuctionExpired, getCountdown } from '../utils/listingsCountdown.js';
 import { requireLogin } from '../utils/authGuard.js';
 import { openLoginModal } from '../components/modals/openLoginModal.js';
 import { getHighestBid } from '../utils/highestBids.js';
+import { showModal } from '../components/modals/showModal.js';
 
 export async function profilePage() {
   if (!requireLogin()) return;
@@ -118,8 +119,8 @@ export async function profilePage() {
         <div class="card h-100 p-3 hover-shadow d-flex flex-column">
           <h3 class="h4 mb-3">${listing.title}</h3>
           <img class="banner-image img-fluid rounded-4" style="height: 300px; background-size: cover; background-position: center;" src="${listing.media?.[0]?.url}" alt="${listing.media?.[0]?.alt || listing.title}" onerror="this.onerror=null; this.src='images/no-image.png';" />
-          <p>${listing.description}</p>
-            <div class="d-flex justify-content-around gap-3 align-items-center text-center my-3">
+          <p class="mt-3">${listing.description}</p>
+            <div class="d-flex justify-content-around gap-3 align-items-center text-center mt-auto">
               <div>
                 <p class="text-danger fw-bold mb-0">${getCountdown(listing.endsAt)}</p>
                 <p>Ends in</p>
@@ -148,6 +149,35 @@ export async function profilePage() {
         btn.classList.add('disabled');
         btn.setAttribute('aria-disabled', 'true');
       });
+  }
+
+  function setupDeleteButtons() {
+    listingsContainer.addEventListener('click', async (e) => {
+      if (
+        e.target.matches('.delete-btn') &&
+        !e.target.classList.contains('disabled')
+      ) {
+        const listingId = e.target
+          .getAttribute('href')
+          .split('#/delete-listing/')[1];
+        if (
+          confirm(
+            'Are you sure you want to delete this listing? This action cannot be undone.',
+          )
+        ) {
+          try {
+            await del(`/auction/listings/${listingId}`);
+            await loadListings();
+            alert('Listing deleted successfully.');
+            window.location.hash = '#/profile';
+          } catch (error) {
+            console.error('Error deleting listing:', error);
+            alert('Failed to delete listing. Please try again.');
+            window.location.hash = '#/profile';
+          }
+        }
+      }
+    });
   }
 
   async function loadPersonalBidHistory() {
@@ -214,4 +244,6 @@ export async function profilePage() {
     loadPersonalBidHistory(),
     loadWonListings(),
   ]);
+
+  setupDeleteButtons();
 }
