@@ -3,6 +3,7 @@ import { get } from '../services/apiClient.js';
 import { openLoginModal } from './modals/openLoginModal.js';
 import { requireLogin } from '../utils/authGuard.js';
 import { getProfile } from '../utils/storage.js';
+import { router } from '../router/router.js';
 
 export async function navbar() {
   const nav = document.getElementById('nav');
@@ -96,11 +97,12 @@ export async function navbar() {
     }
   });
 
-  logoutButton?.querySelector('a')?.addEventListener('click', () => {
+  logoutButton?.querySelector('a')?.addEventListener('click', async () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('profile');
-    alert('Logged out successfully!');
-    window.location.href = '#/home';
+    window.location.hash = '#/home';
+    await navbar();
+    router();
   });
 
   routeLinks.forEach((link) => {

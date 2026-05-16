@@ -8,23 +8,25 @@ export function openLoginModal() {
     body: `
       <form id="loginForm">
         <div class="mb-3">
-          <label for="loginEmail" class="form-label">Email</label>
+          <label for="loginEmail" class="form-label"></label>
           <input
             type="email"
             class="form-control"
             id="loginEmail"
             name="email"
+            placeholder="name@stud.noroff.no"
             required
           >
         </div>
 
         <div class="mb-3">
-          <label for="loginPassword" class="form-label">Password</label>
+          <label for="loginPassword" class="form-label"></label>
           <input
             type="password"
             class="form-control"
             id="loginPassword"
             name="password"
+            placeholder="Password"
             required
           >
         </div>

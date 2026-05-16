@@ -1,5 +1,6 @@
 import { showModal } from './showModal.js';
 import { placeBid } from '../../services/bids.js';
+import { getProfile } from '../../utils/storage.js';
 
 export function openBidModal(item) {
   const { modalElement, modalInstance } = showModal({
@@ -27,7 +28,15 @@ export function openBidModal(item) {
   const bidForm = modalElement.querySelector('#bidForm');
   const bidInput = modalElement.querySelector('#bidAmount');
   const bidMessage = modalElement.querySelector('#bidMessage');
+  const profile = getProfile();
+  const isOwnListing = item.seller?.name === profile?.name;
 
+  if (isOwnListing) {
+    bidMessage.textContent = 'You cannot place a bid on your own listing.';
+    bidInput.disabled = true;
+    bidForm.querySelector('button[type="submit"]').disabled = true;
+    return;
+  }
   bidForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 

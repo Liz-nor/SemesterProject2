@@ -134,11 +134,11 @@ export async function listingDetailsPage() {
         generateListings(similar, similarContainer);
       } else {
         similarContainer.innerHTML =
-          '<p class="text-muted">No similar listings found.</p>';
+          '<p class="text-muted card justify-content-center">No similar listings found.</p>';
       }
     } catch {
       similarContainer.innerHTML =
-        '<p class="text-muted">Could not load similar listings.</p>';
+        '<p class="text-muted card justify-content-center">Could not load similar listings.</p>';
     }
   } catch (error) {
     app.innerHTML = `<p>Something went wrong</p>`;

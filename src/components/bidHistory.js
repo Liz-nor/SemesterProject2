@@ -38,8 +38,8 @@ export function renderBidHistory(bids) {
     div.className = 'd-flex justify-content-between border p-2 mb-2 rounded';
 
     div.innerHTML = `
-      <p><strong>${bid.bidder?.name || 'Unknown'}</strong></p>
-      <p>Amount: ${bid.amount}</p>
+      <p class="mb-0"><strong>${bid.bidder?.name || 'Unknown'}</strong></p>
+      <p class="mb-0">Amount: ${bid.amount}</p>
     `;
 
     container.appendChild(div);

@@ -6,36 +6,33 @@ export function renderProfileForm({ mode = 'register', profile = {} } = {}) {
 
   app.innerHTML = `
   <form class="container mt-4" id="profileForm">
+    <h1 class="mb-4">${mode === 'edit' ? 'Edit Profile' : 'Create Account'}</h1>
+  <div class="mb-3">
+    <input type="text" class="form-control" name="name" id="floatingName" placeholder="Your name">
+  </div>
+
+  <div class=" mb-3">
+    <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@stud.noroff.no">
+  </div>
 
   <div class="mb-3">
-  <input type="text" class="form-control" name="name" id="floatingName" placeholder="Your name">
-</div>
-
-<div class=" mb-3">
-  <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
-</div>
-
-<div class="mb-3">
-  <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
-</div>
-
-<div class="mb-3">
-  <textarea class="form-control"  placeholder="Tell us something about you" name="bio" id="floatingTextarea2" style="height: 100px" ></textarea>
-</div>
-
-<div class="d-flex">
-  <div class="input-group mb-3">
-    <label for="myfile" class="m-2">Upload a profile picture</label>
-    <input type="file" class="m-2" id="myfile" name="profilePicture"><br><br>
+    <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
   </div>
 
-  <div class="input-group mb-3">
-    <label for="myfile" class="m-2">Upload a profile banner</label>
-    <input type="file" class="m-2" id="myfile" name="bannerPicture"><br><br>
+  <div class="mb-3">
+    <textarea class="form-control"  placeholder="Tell us something about you" name="bio" id="floatingTextarea2" style="height: 100px" ></textarea>
   </div>
-</div>
 
-<button type="submit" class="btn btn-nord">${mode === 'edit' ? 'Save Changes' : 'Register'}</button>
+  <div class="mb-3">
+    <label for="profilePictureUrl" class="form-label">Profile Picture URL</label>
+    <input name="profilePictureUrl" type="url" class="form-control" id="profilePictureUrl" placeholder="https://example.com/avatar.jpg" value="${profile?.avatar?.url || ''}">
+  </div>
+  <div class="mb-3">
+    <label for="bannerPictureUrl" class="form-label">Banner Picture URL</label>
+    <input name="bannerPictureUrl" type="url" class="form-control" id="bannerPictureUrl" placeholder="https://example.com/banner.jpg" value="${profile?.banner?.url || ''}">
+  </div>
+
+<button type="submit" class="btn btn-nord my-3">${mode === 'edit' ? 'Save Changes' : 'Register'}</button>
 
 <div id="registerMessage" class="text-danger small mt-2"></div>
 </form>
